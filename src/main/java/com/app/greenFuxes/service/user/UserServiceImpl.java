@@ -164,8 +164,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @EventListener(ApplicationReadyEvent.class)
   public void createFirstAdmin() {
-    createUser("user", "user", Role.ROLE_USER);
-    createUser("admin", "admin", Role.ROLE_SUPER_ADMIN);
+
+    createUser("user", encodePassword("user"), Role.ROLE_USER);
+    createUser("admin", encodePassword("admin"), Role.ROLE_SUPER_ADMIN);
   }
 
   public void createUser(String userName, String password, Role role) {
