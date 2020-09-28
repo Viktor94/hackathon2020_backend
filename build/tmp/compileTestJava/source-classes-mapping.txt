@@ -1,2 +1,0 @@
-com/example/hackathon_backend/HackathonBackendApplicationTests.java
- com.example.hackathon_backend.HackathonBackendApplicationTests
