@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.util.Properties;
 
 @Service("emailSenderService")
@@ -27,14 +26,19 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
-    public void sendVerificationEmailHTML(User user, ConfirmationToken confirmationToken) throws IOException {
+    public void sendVerificationEmailHTML(User user, ConfirmationToken confirmationToken) {
         String to = user.getEmail();
         String subject = "Complete Registration!";
-
-        // Send message
         sendHTMLEmail(generateHTMLMessage(to, subject, EmailTemplateService.VERIFICATION_EMAIL(user, confirmationToken)));
         System.out.println("Sent message successfully....");
         LOGGER.info("Sent VerificationEmailHTML successfully");
+    }
+
+    @Override
+    public void sendQueueNotificationEmail(User user) {
+        String to = user.getEmail();
+        String subject = "Time to lunch!";
+        sendHTMLEmail(generateHTMLMessage(to, subject, EmailTemplateService.QUEUE_NOTIFICATION_EMAIL(user)));
     }
 
     private Message generateHTMLMessage(String to, String subject, String template) {

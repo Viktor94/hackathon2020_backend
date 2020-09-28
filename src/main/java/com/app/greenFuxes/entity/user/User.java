@@ -1,5 +1,6 @@
 package com.app.greenFuxes.entity.user;
 
+import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.reservedDate.ReservedDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
