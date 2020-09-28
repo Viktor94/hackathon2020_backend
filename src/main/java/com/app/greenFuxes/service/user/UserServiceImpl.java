@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   public void createUser(String userName, String password, Role role) {
-    User user = new User(userName, password, role.name(), true, true);
+    User user = new User(userName, password, role.name(),role.getAuthorities(), true, true);
     userRepository.save(user);
   }
 

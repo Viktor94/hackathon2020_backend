@@ -46,10 +46,11 @@ public class User implements Serializable {
   @ManyToOne
   private ReservedDate reservedDate;
 
-  public User(String userName, String password, String role, Boolean active, Boolean notLocked) {
+  public User(String userName, String password, String role, String[] authorities, Boolean active, Boolean notLocked) {
     this.userName = userName;
     this.password = password;
     this.role = role;
+    this.authorities = authorities;
     this.active = active;
     this.notLocked = notLocked;
   }
