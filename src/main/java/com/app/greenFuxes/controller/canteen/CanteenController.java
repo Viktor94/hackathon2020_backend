@@ -1,5 +1,6 @@
 package com.app.greenFuxes.controller.canteen;
 
+import com.app.greenFuxes.dto.canteen.CanteenSettingDTO;
 import com.app.greenFuxes.dto.http.HttpResponse;
 import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
@@ -9,12 +10,12 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @RestController
+@RequestMapping("/canteen")
 public class CanteenController {
     private CanteenService canteenService;
     private UserService userService;
@@ -25,9 +26,26 @@ public class CanteenController {
         this.userService = userService;
     }
 
-    @PostMapping("canteen/apply")
+    @PostMapping("/apply")
     ResponseEntity<?> bookCanteenPlace(@RequestBody Principal userPrincipal) throws UserNotFoundException {
         return response(HttpStatus.OK, canteenService.lunchUser(findUserByPrincipal(userPrincipal)));
+    }
+
+    @PostMapping("/finish")
+    ResponseEntity<?> finishLunch(@RequestBody Principal userPrincipal) throws UserNotFoundException {
+        canteenService.finishLunch(findUserByPrincipal(userPrincipal));
+        return response(HttpStatus.OK, "Finishing lunch was successful!");
+    }
+
+    @GetMapping("/status")
+    ResponseEntity<?> getCanteenStatus(@RequestBody Principal userPrincipal) throws UserNotFoundException {
+        return new ResponseEntity<>(canteenService.canteenStatus(findUserByPrincipal(userPrincipal)), HttpStatus.OK);
+    }
+
+    @PutMapping("/configure")
+    ResponseEntity<?> configureCanteen(@RequestBody CanteenSettingDTO canteenSettingDTO, Principal userPrincipal) throws UserNotFoundException {
+        canteenService.configureCanteen(findUserByPrincipal(userPrincipal), canteenSettingDTO);
+        return response(HttpStatus.OK, "Configuration was successful!");
     }
 
     private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String msg) {

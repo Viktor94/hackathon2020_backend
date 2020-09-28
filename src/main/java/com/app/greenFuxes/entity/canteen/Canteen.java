@@ -36,14 +36,18 @@ public class Canteen {
         }
     }
 
-    public void finishLunch(User user) {
+    public User finishLunch(User user) {
         this.usersInCanteen.remove(user);
         this.lunchStarted.remove(user);
         User nextUser = this.userQueue.poll();
         if (nextUser != null) {
             this.usersInCanteen.add(nextUser);
             this.lunchStarted.put(user, new Date(System.currentTimeMillis()));
+            return nextUser;
+        } else {
+            return null;
         }
+
     }
 
     public void restartDay() {
