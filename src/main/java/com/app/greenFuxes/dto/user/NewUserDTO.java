@@ -1,6 +1,5 @@
 package com.app.greenFuxes.dto.user;
 
-import com.app.greenFuxes.entity.user.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class NewUserDTO {
     private String firstName;
     private String lastName;
-    private Integer age;
-    private Gender gender;
     private String userName;
     private String password;
     private String email;
