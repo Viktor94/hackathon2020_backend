@@ -166,6 +166,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   public void createFirstAdmin() {
 
     createUser("user", encodePassword("user"), Role.ROLE_USER);
+    createUser("user2", encodePassword("user2"), Role.ROLE_USER);
     createUser("admin", encodePassword("admin"), Role.ROLE_SUPER_ADMIN);
   }
 

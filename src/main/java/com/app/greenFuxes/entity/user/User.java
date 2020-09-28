@@ -2,14 +2,18 @@ package com.app.greenFuxes.entity.user;
 
 import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.reservedDate.ReservedDate;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +34,7 @@ public class User implements Serializable {
   @Column(unique = true, length = 250)
   private String userName;
 
-  @JsonIgnore
-  private String password;
+  @JsonIgnore private String password;
 
   @Column(unique = true, length = 250)
   private String email;
@@ -44,10 +47,17 @@ public class User implements Serializable {
   private Boolean notLocked;
   private String profileImageUrl;
 
-  @ManyToOne
-  private ReservedDate reservedDate;
+  @ManyToMany(mappedBy = "usersInOffice")
+  @JsonBackReference
+  private List<ReservedDate> reservedDate = new ArrayList<>();
 
-  public User(String userName, String password, String role, String[] authorities, Boolean active, Boolean notLocked) {
+  public User(
+      String userName,
+      String password,
+      String role,
+      String[] authorities,
+      Boolean active,
+      Boolean notLocked) {
     this.userName = userName;
     this.password = password;
     this.role = role;
