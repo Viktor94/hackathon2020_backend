@@ -16,10 +16,10 @@ import java.util.UUID;
 public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="token_id")
+    @Column(name="token_id", length = 250)
     private Long tokenid;
 
-    @Column(name="confirmation_token")
+    @Column(name="confirmation_token", length = 250)
     private String confirmationToken;
 
     @Temporal(TemporalType.TIMESTAMP)

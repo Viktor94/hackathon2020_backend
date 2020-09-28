@@ -26,13 +26,13 @@ public class User implements Serializable {
   @Column(nullable = false, updatable = false)
   private Long id;
 
-  @Column(unique = true)
+  @Column(unique = true, length = 250)
   private String userName;
 
   @JsonIgnore
   private String password;
 
-  @Column(unique = true)
+  @Column(unique = true, length = 250)
   private String email;
 
   private String firstName;
