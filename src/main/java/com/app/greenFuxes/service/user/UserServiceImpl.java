@@ -12,12 +12,7 @@ import com.app.greenFuxes.repository.UserRepository;
 import com.app.greenFuxes.security.LoginAttemptService;
 import com.app.greenFuxes.security.Role;
 import com.app.greenFuxes.security.UserPrincipal;
-import com.app.greenFuxes.util.FileConstant;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
@@ -32,8 +27,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Service
 @Transactional
@@ -53,8 +46,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   private LoginAttemptService loginAttemptService;
 
   @Autowired
-  public UserServiceImpl(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
-      ModelMapper modelMapper, LoginAttemptService loginAttemptService, Logger LOGGER) {
+  public UserServiceImpl(
+      BCryptPasswordEncoder passwordEncoder,
+      UserRepository userRepository,
+      ModelMapper modelMapper,
+      LoginAttemptService loginAttemptService,
+      Logger LOGGER) {
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
@@ -86,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     user.setNotLocked(true);
     user.setRole(Role.ROLE_USER.name());
     user.setAuthorities(Role.ROLE_USER.getAuthorities());
-    user.setProfileImageUrl(getTemporaryProfileImageUrl(registrationDTO.getUserName()));
+    user.setProfileImageUrl("https://robohash.org/" + registrationDTO.getUserName() + ".png");
     userRepository.save(user);
     LOGGER.info("New user created: " + registrationDTO.getUserName());
     return user;
@@ -120,12 +117,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     registrationValidation(newUserDTO.getUserName(), newUserDTO.getEmail());
     User user = modelMapper.map(newUserDTO, User.class);
     user.setPassword(encodePassword(newUserDTO.getPassword()));
-    user.setProfileImageUrl(getTemporaryProfileImageUrl(newUserDTO.getUserName()));
+    user.setProfileImageUrl("https://robohash.org/" + newUserDTO.getUserName() + ".png");
     userRepository.save(user);
-    saveProfileImg(user, newUserDTO.getProfileImageUrl());
+
     return user;
   }
-
 
   @Override
   public User findById(Long id) throws UserNotFoundException {
@@ -148,14 +144,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   @Override
-  public User updateProfileImg(Long id, MultipartFile profileImg)
-      throws UserManipulationException, IOException {
-    User user = findById(id);
-    saveProfileImg(user, profileImg);
-    return user;
-  }
-
-  @Override
   public void activateUser(Long id) throws UserNotFoundException {
     User user = findById(id);
     user.setActive(true);
@@ -170,38 +158,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   }
 
   public void createUser(String userName, String password, Role role) {
-    User user = new User(userName, password, role.name(),role.getAuthorities(), true, true);
+    User user = new User(userName, password, role.name(), role.getAuthorities(), true, true);
     userRepository.save(user);
   }
 
-  private void saveProfileImg(User user, MultipartFile profileImageUrl) throws IOException {
-    if (profileImageUrl != null) {
-      Path userFolder = Paths.get(FileConstant.USER_FOLDER + user.getUserName()).toAbsolutePath()
-          .normalize();
-      if (!Files.exists(userFolder)) {
-        Files.createDirectories(userFolder);
-        LOGGER.info(FileConstant.DIRECTORY_CREATED + userFolder.toString());
-      }
-      Files.deleteIfExists(Paths
-          .get(userFolder + user.getUserName() + FileConstant.DOT + FileConstant.JPG_EXTENSION));
-      Files.copy(profileImageUrl.getInputStream(),
-          userFolder.resolve(user.getUserName() + FileConstant.DOT + FileConstant.JPG_EXTENSION),
-          StandardCopyOption.REPLACE_EXISTING);
-      user.setProfileImageUrl(setProfileImgUrl(user.getUserName()));
-      userRepository.save(user);
-      LOGGER.info(FileConstant.FILE_SAVED_IN_FILE_SYSTEM + profileImageUrl.getOriginalFilename());
+  @Override
+  public String getUserImageUrl(Long id) throws UserNotFoundException {
+    User user = userRepository.findById(id).orElse(null);
+    if (user != null) {
+      return user.getProfileImageUrl();
+    } else {
+      throw new UserNotFoundException("User does not exist wit the provided id.");
     }
-  }
-
-  private String setProfileImgUrl(String username) {
-    return ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path(FileConstant.USER_IMAGE_PATH + username + FileConstant.FORWARD_SLASH
-            + username + FileConstant.DOT + FileConstant.JPG_EXTENSION).toUriString();
-  }
-
-  private String getTemporaryProfileImageUrl(String username) {
-    return ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path(FileConstant.DEFAULT_USER_IMAGE_PATH + username).toUriString();
   }
 
   private String encodePassword(String password) {
