@@ -25,9 +25,9 @@ public class OfficeController {
 
   @Autowired
   public OfficeController(
-      OfficeService officeService,
-      CanteenService canteenService,
-      ReserveDateService reserveDateService) {
+          OfficeService officeService,
+          CanteenService canteenService,
+          ReserveDateService reserveDateService) {
     this.officeService = officeService;
     this.canteenService = canteenService;
     this.reserveDateService = reserveDateService;
@@ -43,7 +43,7 @@ public class OfficeController {
   public ResponseEntity<?> checkDate(@RequestBody DateDTO dateDTO) {
     List<User> list = reserveDateService.findByDate(dateDTO.getDate()).getUsersInOffice();
     UsersInOfficeDTO usersInOfficeDTO =
-        new UsersInOfficeDTO(list, officeService.findById(1L).getCapacity() - list.size());
+            new UsersInOfficeDTO(list, officeService.findById(1L).getCapacity() - list.size());
     return new ResponseEntity<>(usersInOfficeDTO, HttpStatus.OK);
   }
 }
