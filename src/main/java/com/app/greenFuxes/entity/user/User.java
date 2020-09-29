@@ -1,13 +1,11 @@
 package com.app.greenFuxes.entity.user;
 
-import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.reservedDate.ReservedDate;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
