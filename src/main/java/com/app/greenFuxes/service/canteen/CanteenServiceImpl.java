@@ -77,6 +77,6 @@ public class CanteenServiceImpl implements CanteenService {
     }
 
     private Long extractOfficeIdFromUser(User user) {
-        return user.getReservedDate().getOffice().getId();
+        return user.getReservedDate().get(0).getOffice().getId();
     }
 }

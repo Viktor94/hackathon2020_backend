@@ -42,4 +42,9 @@ public class OfficeServiceImpl implements OfficeService {
             }
         }
     }
+
+    @Override
+    public Office findById(Long id) {
+        return officeRepository.findById(id).orElse(null);
+    }
 }
