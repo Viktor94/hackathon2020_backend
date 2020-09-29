@@ -41,6 +41,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
 
+// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+    compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.5.2.RELEASE'
+
 //Model mapper
     compile 'org.modelmapper:modelmapper:2.3.8'
 
