@@ -16,7 +16,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -56,4 +55,5 @@ public class ReservedDate {
   public ReservedDate(String date) {
     this.date = date;
   }
+
 }

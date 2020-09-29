@@ -7,4 +7,6 @@ public interface OfficeService {
   Office create() throws Exception;
 
   void setHeadCount(int headcount) throws Exception;
+
+  Office findById(Long id);
 }
