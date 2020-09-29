@@ -34,6 +34,9 @@ dependencies {
 //Mail sender
 	compile group: 'javax.mail', name: 'mail', version: '1.4.7'
 
+// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+	compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.5.2.RELEASE'
+
 //Swagger
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	compile 'io.springfox:springfox-swagger-ui:3.0.0'
