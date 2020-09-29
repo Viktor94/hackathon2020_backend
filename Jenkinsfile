@@ -38,13 +38,13 @@ pipeline {
           s3://$S3_BUCKET/backend/$BUILD_ID/Dockerrun.aws.json'
           sh 'aws elasticbeanstalk create-application-version \
           --application-name "$APP_NAME" \
-          --version-label $APP_NAME-$BUILD_ID \
+          --version-label greenfuxes-$BUILD_ID \
           --source-bundle S3Bucket="$S3_BUCKET",S3Key="$BUILD_ID/Dockerrun.aws.json" \
           --auto-create-application'
           sh 'aws elasticbeanstalk update-environment \
           --application-name "$APP_NAME" \
           --environment-name $ENV_NAME \
-          --version-label $APP_NAME-$BUILD_ID'
+          --version-label greenfuxes-$BUILD_ID'
         }
       }
     }

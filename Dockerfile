@@ -6,7 +6,7 @@ RUN ./gradlew bootjar
 FROM openjdk:11.0.4-jre-slim
 
 ENV DATASOURCE_USERNAME=root
-ENV DATASOURCE_URL=jdbc:mysql://hackathon-greenfuxes.c7atmc5cgyxk.eu-west-3.rds.amazonaws.com
+ENV DATASOURCE_URL=jdbc:mysql://hackathon-greenfuxes.c7atmc5cgyxk.eu-west-3.rds.amazonaws.com/greenfuxes?serverTimezone=UTC
 ENV DATASOURCE_PASSWORD=password
 ENV EMAIL_USERNAME=tesztElemm@gmail.com
 ENV EMAIL_PASSWORD=Asd12345
