@@ -31,3 +31,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# project specific items
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/checksums/checksums.lock
