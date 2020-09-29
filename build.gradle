@@ -52,8 +52,15 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
 //Apache Commons
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+	compile group: 'commons-io', name: 'commons-io', version: '2.4'
+
+//WebClient
+	compile 'org.springframework.boot:spring-boot-starter-webflux'
+	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+
+
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
