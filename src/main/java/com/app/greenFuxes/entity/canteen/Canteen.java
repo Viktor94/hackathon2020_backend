@@ -56,11 +56,14 @@ public class Canteen {
         this.lunchStarted = new HashMap<>();
     }
 
-    public void kickGreedy() {
+    public ArrayList<User> kickGreedy() {
+        ArrayList<User> nextUsers = new ArrayList<>();
         for (Map.Entry<User, Date> user : this.lunchStarted.entrySet()) {
-            if (new Date(System.currentTimeMillis()).getTime() / 100000 - user.getValue().getTime() / 100000 > this.lunchtimeInMinute) {
-                finishLunch(user.getKey());
+            long timeSpent = (new Date(System.currentTimeMillis()).getTime() - user.getValue().getTime()) / 100000;
+            if (timeSpent > this.lunchtimeInMinute) {
+                nextUsers.add(finishLunch(user.getKey()));
             }
         }
+        return nextUsers;
     }
 }

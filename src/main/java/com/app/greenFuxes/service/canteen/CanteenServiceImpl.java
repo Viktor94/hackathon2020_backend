@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class CanteenServiceImpl implements CanteenService {
 
@@ -20,8 +22,8 @@ public class CanteenServiceImpl implements CanteenService {
     }
 
     @Override
-    public void addCanteen(Long officeId) {
-        CanteenManager.getInstance().createCanteen(officeId);
+    public Canteen addCanteen(Long officeId) {
+       return CanteenManager.getInstance().createCanteen(officeId);
     }
 
     @Override
@@ -36,7 +38,6 @@ public class CanteenServiceImpl implements CanteenService {
         } else {
             return "You are placed into the queue. You are going to get notification as soon as you can go to the canteen.";
         }
-
     }
 
     @Override
@@ -48,10 +49,15 @@ public class CanteenServiceImpl implements CanteenService {
     }
 
     @Override
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 300000)
     public void kickGreedy() {
-        System.out.println("Egyél kutyyaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        CanteenManager.getInstance().getCanteenList().forEach(Canteen::kickGreedy);
+        for (Canteen canteen:CanteenManager.getInstance().getCanteenList()) {
+            for (User nextUser:canteen.kickGreedy()) {
+                if (nextUser!=null){
+                    emailSenderService.sendQueueNotificationEmail(nextUser);
+                }
+            }
+        }
     }
 
     @Override
