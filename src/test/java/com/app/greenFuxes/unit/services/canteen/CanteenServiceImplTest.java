@@ -46,7 +46,7 @@ public class CanteenServiceImplTest {
         reservedDate = new ReservedDate();
         user = new User("bob", "bob", Role.ROLE_USER.name(), Role.ROLE_USER.getAuthorities(), true, true);
         reservedDate.setUsersInOffice(new ArrayList<>(Collections.singletonList(user)));
-        user.setReservedDate(reservedDate);
+        user.setReservedDate(new ArrayList<>(Collections.singletonList(reservedDate)));
         testOffice.setReservedDates(new ArrayList<>(Collections.singletonList(reservedDate)));
         reservedDate.setOffice(testOffice);
     }
@@ -84,7 +84,7 @@ public class CanteenServiceImplTest {
         canteenService.restartDay(user);
         User otherUser = new User();
         reservedDate.getUsersInOffice().add(otherUser);
-        otherUser.setReservedDate(reservedDate);
+        otherUser.setReservedDate(new ArrayList<>(Collections.singletonList(reservedDate)));
         Assert.assertEquals("You can go to the canteen.", canteenService.lunchUser(user));
         Assert.assertEquals("You are placed into the queue. You are going to get notification as soon as you can go to the canteen.", canteenService.lunchUser(otherUser));
 

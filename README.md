@@ -1,4 +1,4 @@
-# SpringBasicTemplateApp
+# Green Fuxe$ Hackathon Backend
 
 
 ## For the project to compile and run, use these environmental variables:
@@ -17,8 +17,12 @@
 ##### For JWT Token generation
 - JWT_SECRET                                `Random string`
 
+##### For Kafka
+- KAFKA_SERVICE_URI                         `"127.0.0.1:9092"`
+
 #### Documentation:
-- [Swagger](http://localhost:8080/swagger-ui/index.html)
+- Local: [Swagger](http://localhost:8080/swagger-ui/index.html)
+- Hosted: [Swagger](https://hackathon-back.herokuapp.com/swagger-ui/index.html)
 
 
 #### Created by:

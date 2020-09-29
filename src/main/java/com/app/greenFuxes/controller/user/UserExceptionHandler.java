@@ -1,12 +1,12 @@
 package com.app.greenFuxes.controller.user;
 
 import com.app.greenFuxes.dto.http.HttpResponse;
+import com.app.greenFuxes.exception.confirmationtoken.InvalidConfirmationTokenException;
 import com.app.greenFuxes.exception.user.EmailExistException;
 import com.app.greenFuxes.exception.user.EmailNotFoundException;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
 import com.app.greenFuxes.exception.user.UsernameExistException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.app.greenFuxes.exception.confirmationtoken.InvalidConfirmationTokenException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -17,6 +17,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,7 +39,7 @@ public class UserExceptionHandler implements ErrorController {
     private static final String ERROR_PATH = "/error";
 
     @Autowired
-    private  Logger LOGGER;
+    private Logger LOGGER;
 
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<HttpResponse> accountDisabledException() {
