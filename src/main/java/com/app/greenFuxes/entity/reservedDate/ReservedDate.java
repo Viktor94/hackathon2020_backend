@@ -33,12 +33,14 @@ public class ReservedDate {
   @ManyToMany(cascade = {CascadeType.ALL})
   private List<User> usersInOffice = new ArrayList<>();
 
-  @ManyToOne
-  @JsonBackReference
-  private Office office;
+  @ManyToOne @JsonBackReference private Office office;
 
   public void addUserToList(User user) {
     this.usersInOffice.add(user);
+  }
+
+  public void removeUserFromList(User user) {
+    this.usersInOffice.remove(user);
   }
 
   public String convertDateToSimpleDate() {
