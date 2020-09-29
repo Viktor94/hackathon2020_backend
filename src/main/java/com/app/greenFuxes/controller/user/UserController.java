@@ -35,83 +35,94 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = {"/users"})
+@RequestMapping("users")
 public class UserController {
 
-    private UserService userService;
-    private AuthenticationManager authenticationManager;
-    private JwtUtility jwtUtility;
-    private ConfirmationTokenService confirmationTokenService;
-    private EmailSenderServiceImpl emailSenderServiceImpl;
+  private UserService userService;
+  private AuthenticationManager authenticationManager;
+  private JwtUtility jwtUtility;
+  private ConfirmationTokenService confirmationTokenService;
+  private EmailSenderServiceImpl emailSenderServiceImpl;
 
-    @Autowired
-    public UserController(UserService userService, AuthenticationManager authenticationManager, JwtUtility jwtUtility, ConfirmationTokenService confirmationTokenService, EmailSenderServiceImpl emailSenderServiceImpl) {
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtility = jwtUtility;
-        this.confirmationTokenService = confirmationTokenService;
-        this.emailSenderServiceImpl = emailSenderServiceImpl;
-    }
+  @Autowired
+  public UserController(UserService userService, AuthenticationManager authenticationManager,
+      JwtUtility jwtUtility, ConfirmationTokenService confirmationTokenService,
+      EmailSenderServiceImpl emailSenderServiceImpl) {
+    this.userService = userService;
+    this.authenticationManager = authenticationManager;
+    this.jwtUtility = jwtUtility;
+    this.confirmationTokenService = confirmationTokenService;
+    this.emailSenderServiceImpl = emailSenderServiceImpl;
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws UserNotFoundException {
-        authenticate(loginDTO);
-        User loginUser = userService.findByUsername(loginDTO.getUserName());
-        UserPrincipal userPrincipal = new UserPrincipal(loginUser);
-        return new ResponseEntity<>(new LoginResponseDTO("Login was successful!", jwtUtility.generateJwtToken(userPrincipal)), HttpStatus.OK);
-    }
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws UserNotFoundException {
+    authenticate(loginDTO);
+    User loginUser = userService.findByUsername(loginDTO.getUserName());
+    UserPrincipal userPrincipal = new UserPrincipal(loginUser);
+    return new ResponseEntity<>(
+        new LoginResponseDTO("Login was successful!", jwtUtility.generateJwtToken(userPrincipal)),
+        HttpStatus.OK);
+  }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegistrationDTO userRegDTO) throws UserManipulationException, IOException {
-        User newUser = userService.register(userRegDTO);
-        ConfirmationToken confTok = confirmationTokenService.saveConfirmationToken(new ConfirmationToken(newUser));
-        emailSenderServiceImpl.sendVerificationEmailHTML(newUser,confTok);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+  @PostMapping("/register")
+  public ResponseEntity<?> register(@RequestBody RegistrationDTO userRegDTO)
+      throws UserManipulationException, IOException {
+    User newUser = userService.register(userRegDTO);
+    ConfirmationToken confTok = confirmationTokenService
+        .saveConfirmationToken(new ConfirmationToken(newUser));
+    emailSenderServiceImpl.sendVerificationEmailHTML(newUser, confTok);
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 
-    @RequestMapping(value = "/confirm", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken) throws InvalidConfirmationTokenException, UserNotFoundException {
-        ConfirmationToken token = confirmationTokenService.findByToken(confirmationToken);
-        userService.activateUser(token.getUser().getId());
-        confirmationTokenService.deleteConfirmationToken(token.getTokenid());
-        return response(HttpStatus.OK, "Activation was successful!");
-    }
+  @RequestMapping(value = "/confirm", method = {RequestMethod.GET, RequestMethod.POST})
+  public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String confirmationToken)
+      throws InvalidConfirmationTokenException, UserNotFoundException {
+    ConfirmationToken token = confirmationTokenService.findByToken(confirmationToken);
+    userService.activateUser(token.getUser().getId());
+    confirmationTokenService.deleteConfirmationToken(token.getTokenid());
+    return response(HttpStatus.OK, "Activation was successful!");
+  }
 
-    @PostMapping("/add")
-    public ResponseEntity<User> addNewUser(@RequestBody NewUserDTO newUserDTO) throws IOException, UserManipulationException {
-        User newUser = userService.addUser(newUserDTO);
-        return new ResponseEntity<>(newUser, HttpStatus.OK);
-    }
+  @PostMapping("/add")
+  public ResponseEntity<User> addNewUser(@RequestBody NewUserDTO newUserDTO)
+      throws IOException, UserManipulationException {
+    User newUser = userService.addUser(newUserDTO);
+    return new ResponseEntity<>(newUser, HttpStatus.OK);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable Long id) throws UserNotFoundException {
-        User user = userService.findById(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<User> findUserById(@PathVariable Long id) throws UserNotFoundException {
+    User user = userService.findById(id);
+    return new ResponseEntity<>(user, HttpStatus.OK);
+  }
 
-    @GetMapping("")
-    public ResponseEntity<List<User>> findAllUser() {
-        List<User> users = userService.getUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+  @GetMapping("")
+  public ResponseEntity<List<User>> findAllUser() {
+    List<User> users = userService.getUsers();
+    return new ResponseEntity<>(users, HttpStatus.OK);
+  }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('user:delete')")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) throws UserNotFoundException {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
+  @DeleteMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('user:delete')")
+  public ResponseEntity<?> deleteUser(@PathVariable Long id) throws UserNotFoundException {
+    userService.deleteUser(id);
+    return ResponseEntity.noContent().build();
+  }
 
-    @GetMapping(path = "/{id}/profile/image", produces = MediaType.IMAGE_JPEG_VALUE)
-    public String getTempProfileImg(@PathVariable Long id) throws UserNotFoundException {
-        return userService.getUserImageUrl(id);
-    }
+  @GetMapping(path = "/{id}/profile/image", produces = MediaType.IMAGE_JPEG_VALUE)
+  public String getTempProfileImg(@PathVariable Long id) throws UserNotFoundException {
+    return userService.getUserImageUrl(id);
+  }
 
-    private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String msg) {
-        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(), msg.toUpperCase()), httpStatus);
-    }
+  private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String msg) {
+    return new ResponseEntity<>(
+        new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),
+            msg.toUpperCase()), httpStatus);
+  }
 
-    private void authenticate(LoginDTO loginDTO) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUserName(), loginDTO.getPassword()));
-    }
+  private void authenticate(LoginDTO loginDTO) {
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(loginDTO.getUserName(), loginDTO.getPassword()));
+  }
 }

@@ -2,13 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.3.0.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
-	id 'war'
 }
 
 
 group = 'com.app'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '8'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -54,12 +53,8 @@ dependencies {
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 	compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
-
-
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
 }
 
 test {
