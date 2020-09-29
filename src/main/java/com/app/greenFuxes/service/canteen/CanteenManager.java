@@ -20,11 +20,19 @@ public class CanteenManager {
         return instance;
     }
 
-    public void createCanteen(Long officeId) {
-        canteenList.add(new Canteen(officeId));
+    public Canteen createCanteen(Long officeId) {
+        Canteen canteen = new Canteen(officeId);
+        canteenList.add(canteen);
+        return canteen;
     }
 
     public Canteen findCanteenByOfficeId(Long officeId) {
-      return canteenList.stream().filter(c-> c.getOfficeId().equals(officeId)).findFirst().orElse(null);
+        Canteen canteen = canteenList.stream().filter(c-> c.getOfficeId().equals(officeId)).findFirst().orElse(null);
+        if (canteen==null){
+            return createCanteen(officeId);
+        }else {
+            return canteen;
+        }
+
     }
 }

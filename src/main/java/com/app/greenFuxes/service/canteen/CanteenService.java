@@ -6,7 +6,7 @@ import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.user.User;
 
 public interface CanteenService {
-    void addCanteen(Long officeId);
+    Canteen addCanteen(Long officeId);
 
     Canteen findCanteenByOfficeId(Long officeId);
 

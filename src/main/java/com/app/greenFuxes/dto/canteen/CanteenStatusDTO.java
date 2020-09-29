@@ -16,11 +16,13 @@ import java.util.ArrayList;
 public class CanteenStatusDTO {
 
     private Integer freeSpace;
+    private Integer lunchTimeLengthInMinute;
     private ArrayList<User> usersInCanteen;
     private ArrayList<User> userQueue = new ArrayList<>();
 
     public CanteenStatusDTO(Canteen canteen) {
         this.freeSpace = canteen.getUsersInCanteen().remainingCapacity();
+        this.lunchTimeLengthInMinute = canteen.getLunchtimeInMinute();
         this.usersInCanteen = new ArrayList<>(canteen.getUsersInCanteen());
         this.userQueue = new ArrayList<>(canteen.getUserQueue());
     }
