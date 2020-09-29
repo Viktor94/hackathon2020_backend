@@ -6,9 +6,9 @@ import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.EmailNotFoundException;
 import com.app.greenFuxes.exception.user.UserManipulationException;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
+
 import java.io.IOException;
 import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -26,8 +26,7 @@ public interface UserService {
 
     void deleteUser(Long id) throws UserNotFoundException;
 
-    User updateProfileImg(Long id, MultipartFile profileImg)
-        throws UserManipulationException, IOException;
-
     void activateUser(Long id) throws UserNotFoundException;
+
+    String getUserImageUrl(Long id) throws UserNotFoundException;
 }

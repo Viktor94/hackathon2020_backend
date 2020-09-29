@@ -102,30 +102,9 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/updateProfileImage")
-    public ResponseEntity<User> updateProfileImg(@PathVariable Long id, ProfileImageUpdateDTO profImg) throws IOException, UserManipulationException {
-        User user = userService.updateProfileImg(id, profImg.getProfileImageUrl());
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/image/{userName}/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getProfileImg(@PathVariable String userName, @PathVariable String fileName) throws IOException {
-        return Files.readAllBytes(Paths.get(FileConstant.USER_FOLDER + userName + FileConstant.FORWARD_SLASH + fileName));
-
-    }
-
-    @GetMapping(path = "/image/profile/{userName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getTempProfileImg(@PathVariable String userName) throws IOException {
-        URL url = new URL(FileConstant.TEMP_PROFILE_IMAGE_BASE_URL + userName);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (InputStream inputStream = url.openStream()) {
-            int bytesRead;
-            byte[] chunk = new byte[1024];
-            while ((bytesRead = inputStream.read(chunk)) > 0) {
-                byteArrayOutputStream.write(chunk, 0, bytesRead);
-            }
-        }
-        return byteArrayOutputStream.toByteArray();
+    @GetMapping(path = "/{id}/profile/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    public String getTempProfileImg(@PathVariable Long id) throws UserNotFoundException {
+        return userService.getUserImageUrl(id);
     }
 
     private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String msg) {
