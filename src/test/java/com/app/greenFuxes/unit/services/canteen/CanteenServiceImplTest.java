@@ -6,6 +6,7 @@ import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.office.Office;
 import com.app.greenFuxes.entity.reservedDate.ReservedDate;
 import com.app.greenFuxes.entity.user.User;
+import com.app.greenFuxes.kafka.KafkaMessageService;
 import com.app.greenFuxes.security.Role;
 import com.app.greenFuxes.service.canteen.CanteenManager;
 import com.app.greenFuxes.service.canteen.CanteenServiceImpl;
@@ -28,6 +29,9 @@ public class CanteenServiceImplTest {
     @Mock
     private EmailSenderService emailSenderService;
 
+    @Mock
+    private KafkaMessageService kafkaMessageService;
+
     private CanteenServiceImpl canteenService;
     private Canteen testCanteen;
     private ReservedDate reservedDate;
@@ -36,7 +40,7 @@ public class CanteenServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        canteenService = new CanteenServiceImpl(emailSenderService);
+        canteenService = new CanteenServiceImpl(emailSenderService, kafkaMessageService);
         CanteenManager.getInstance().setCanteenList(new ArrayList<>());
         Long officeId = 20L;
         testCanteen = canteenService.addCanteen(officeId);

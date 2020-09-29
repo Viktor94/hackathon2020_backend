@@ -24,8 +24,8 @@ public class CanteenServiceImpl implements CanteenService {
   }
 
   @Override
-  public void addCanteen(Long officeId) {
-    CanteenManager.getInstance().createCanteen(officeId);
+  public Canteen addCanteen(Long officeId) {
+   return CanteenManager.getInstance().createCanteen(officeId);
   }
 
   @Override
