@@ -34,7 +34,7 @@ pipeline {
       }
       steps {
         withAWS(credentials:'benebp-aws', region: 'eu-west-3') {
-          sh 'aws s3 cp ./DevDockerrun.aws.json \
+          sh 'aws s3 cp ./Dockerrun.aws.json \
           s3://$S3_BUCKET/backend/$BUILD_ID/Dockerrun.aws.json'
           sh 'aws elasticbeanstalk create-application-version \
           --application-name "$APP_NAME" \
