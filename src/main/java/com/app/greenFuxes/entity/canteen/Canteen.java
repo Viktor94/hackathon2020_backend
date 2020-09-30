@@ -68,7 +68,7 @@ public class Canteen {
       return null;
     }
     if (userQueue.size() <= 3) {
-      ArrayList<User> listOfUsersInQueue = new ArrayList(userQueue);
+      ArrayList<User> listOfUsersInQueue = new ArrayList<>(userQueue);
       return listOfUsersInQueue.get(2);
     }
     return null;
