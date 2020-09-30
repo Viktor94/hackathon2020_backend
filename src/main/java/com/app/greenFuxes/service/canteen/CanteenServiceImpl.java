@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Map;
+
 @Service
 public class CanteenServiceImpl implements CanteenService {
 
@@ -18,14 +21,15 @@ public class CanteenServiceImpl implements CanteenService {
   private final KafkaMessageService kafkaMessageService;
 
   @Autowired
-  public CanteenServiceImpl(EmailSenderService emailSenderService, KafkaMessageService kafkaMessageService) {
+  public CanteenServiceImpl(
+      EmailSenderService emailSenderService, KafkaMessageService kafkaMessageService) {
     this.emailSenderService = emailSenderService;
     this.kafkaMessageService = kafkaMessageService;
   }
 
   @Override
   public Canteen addCanteen(Long officeId) {
-   return CanteenManager.getInstance().createCanteen(officeId);
+    return CanteenManager.getInstance().createCanteen(officeId);
   }
 
   @Override
@@ -59,10 +63,21 @@ public class CanteenServiceImpl implements CanteenService {
   @Override
   @Scheduled(fixedRate = 300000)
   public void kickGreedy() {
-    for (Canteen canteen:CanteenManager.getInstance().getCanteenList()) {
-      for (User nextUser:canteen.kickGreedy()) {
-        if (nextUser!=null){
+    for (Canteen canteen : CanteenManager.getInstance().getCanteenList()) {
+      for (Map.Entry<User, Date> user : canteen.getLunchStarted().entrySet()) {
+        long timeSpent =
+            (new Date(System.currentTimeMillis()).getTime() - user.getValue().getTime()) / 100000;
+        if (timeSpent > canteen.getLunchtimeInMinute()) {
+          User kickUser = user.getKey();
+          User nextUser = canteen.finishLunch(kickUser);
+          emailSenderService.sendKickFromCanteenNotificationEmail(kickUser);
           emailSenderService.sendQueueNotificationEmail(nextUser, canteen.getLunchtimeInMinute());
+        }
+        if (timeSpent >= (canteen.getLunchtimeInMinute() - 5)
+            && timeSpent < canteen.getLunchtimeInMinute()) {
+          User alarmUser = user.getKey();
+          Integer timeLef = Math.toIntExact(Integer.valueOf(canteen.getLunchtimeInMinute()) - timeSpent);
+          emailSenderService.sendLessThenFiveMinLeftNotificationEmail(alarmUser,timeLef);
         }
       }
     }
@@ -75,9 +90,10 @@ public class CanteenServiceImpl implements CanteenService {
 
   @Override
   public void configureCanteen(User user, CanteenSettingDTO canteenSettingDTO) {
-    findCanteenByOfficeId(extractOfficeIdFromUser(user)).setLunchtimeInMinute(canteenSettingDTO.getLunchtimeInMinute());
-    findCanteenByOfficeId(extractOfficeIdFromUser(user)).setMaxCanteenCapacity(
-            canteenSettingDTO.getMaxCanteenCapacity());
+    findCanteenByOfficeId(extractOfficeIdFromUser(user))
+        .setLunchtimeInMinute(canteenSettingDTO.getLunchtimeInMinute());
+    findCanteenByOfficeId(extractOfficeIdFromUser(user))
+        .setMaxCanteenCapacity(canteenSettingDTO.getMaxCanteenCapacity());
   }
 
   @Override
@@ -90,5 +106,4 @@ public class CanteenServiceImpl implements CanteenService {
   public void setConfiguration() {
     CanteenManager.getInstance().getCanteenList().forEach(Canteen::restartDay);
   }
-
 }
