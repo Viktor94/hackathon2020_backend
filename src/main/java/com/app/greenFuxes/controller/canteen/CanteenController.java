@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -43,6 +44,7 @@ public class CanteenController {
     }
 
     @PutMapping("/configure")
+    @PreAuthorize("hasAnyAuthority('admin')")
     ResponseEntity<?> configureCanteen(@RequestBody CanteenSettingDTO canteenSettingDTO, Principal userPrincipal) throws UserNotFoundException {
         canteenService.configureCanteen(findUserByPrincipal(userPrincipal), canteenSettingDTO);
         return response(HttpStatus.OK, "Configuration was successful!");

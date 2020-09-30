@@ -155,7 +155,7 @@ public class UserControllerIntegrationTests {
   }
 
   @Test
-  @WithMockUser
+  @WithMockUser(authorities = "admin")
   public void getUserById_successful_assertEquals() throws Exception {
     register_successful_assertEquals();
     User user = userService.findByUsername(asdRegistrationDTO.getUserName());
