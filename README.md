@@ -37,3 +37,5 @@
 [![CircleCI](https://circleci.com/gh/Viktor94/hackathon2020_backend.svg?style=svg&circle-token=7abd2359947f17a4cd4c4d8588380133811ab68a)](undefined)
 
 [![codecov](https://codecov.io/gh/Viktor94/hackathon2020_backend/branch/develop/graph/badge.svg?token=81INYO1QQW)](undefined)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/cdnjs/cdnjs.svg?style=flat)]()
