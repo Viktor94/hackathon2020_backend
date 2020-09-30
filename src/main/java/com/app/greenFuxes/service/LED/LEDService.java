@@ -6,7 +6,12 @@ public interface LEDService {
 
   void lock(DurationDTO durationDTO);
 
-  void send(LEDEnum ledEnum) throws Exception;
+  void testLedDisplay(LEDEnum ledEnum) throws Exception;
 
   void stop();
+
+  void displayStaringStatusOnLedDisplay();
+
+  void showCurrentCanteenStatusOnLedDisplay() throws Exception;
+
 }

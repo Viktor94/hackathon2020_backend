@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
+import com.app.greenFuxes.service.LED.LEDEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,8 @@ public class Canteen {
       new LinkedBlockingQueue<>(this.maxCanteenCapacity);
   private Queue<User> userQueue = new LinkedList<>();
   private Map<User, Date> lunchStarted = new HashMap<>();
+  private LEDEnum canteenLedStatus = LEDEnum.GREEN;
+  private int ledPriorityCounter = 200;
 
   public Canteen(Long officeId) {
     this.officeId = officeId;
@@ -76,5 +79,9 @@ public class Canteen {
       return listOfUsersInQueue.get(2);
     }
     return null;
+  }
+
+  public int getFreeSpaceInCanteen(){
+    return this.maxCanteenCapacity - this.usersInCanteen.size();
   }
 }
