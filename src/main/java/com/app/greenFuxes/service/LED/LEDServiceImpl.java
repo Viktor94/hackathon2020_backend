@@ -23,22 +23,26 @@ public class LEDServiceImpl implements LEDService {
   private final String key = System.getenv("LED_API_KEY");
 
   @Override
-  public void send(DurationDTO durationDTO) throws Exception {
+  public void send(DurationDTO durationDTO, LEDEnum ledEnum) throws Exception {
     try {
-      String data = "";
-      data = new String(Files.readAllBytes(Paths.get("src/main/resources/config.txt")));
+      String data = new String(Files.readAllBytes(Paths.get("src/main/resources/" + ledEnum.getValue())));
 
-      int temp = lock(durationDTO);
+      int tempLock = lock(durationDTO);
       ConfigDTO configDTO = new ConfigDTO(data);
 
-      if (temp == 200) {
-        client
-            .post()
-            .uri("/send/" + key)
-            .body(Mono.just(configDTO), ConfigDTO.class)
-            .exchange()
-            .block()
-            .rawStatusCode();
+      if (tempLock == 200) {
+        int tempSend =
+            client
+                .post()
+                .uri("/send/" + key)
+                .body(Mono.just(configDTO), ConfigDTO.class)
+                .exchange()
+                .block()
+                .rawStatusCode();
+
+        System.out.println("/send status code: " + tempSend);
+      } else {
+        System.out.println("/lock status code: " + tempLock);
       }
     } catch (IOException e) {
       System.out.println("File read failed");
@@ -64,10 +68,12 @@ public class LEDServiceImpl implements LEDService {
   }
 
   private void unLock() {
-    client.post().uri("/unlock/" + key);
+    int tempUnLock = client.post().uri("/unlock/" + key).exchange().block().rawStatusCode();
+    System.out.println("/unlock status code: " + tempUnLock);
   }
 
   private void stopSending() {
-    client.post().uri("/stop/" + key);
+    int tempStop = client.post().uri("/stop/" + key).exchange().block().rawStatusCode();
+    System.out.println("/stop status code: " + tempStop);
   }
 }

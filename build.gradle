@@ -59,9 +59,6 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-webflux'
 	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
 
-
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
