@@ -5,6 +5,7 @@ import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
 import com.app.greenFuxes.service.reserveDate.ReserveDateService;
 import com.app.greenFuxes.service.user.UserService;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
