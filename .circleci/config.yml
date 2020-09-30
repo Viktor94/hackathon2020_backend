@@ -32,7 +32,4 @@ jobs:
           paths:
             - ~/.gradle/caches
 
-      - run: gradle checkstyleMain
-      - run: gradle checkstyleTest
-      - run: gradle build -x test -x checkstyleMain -x checkStyleTest
       - run: gradle test
