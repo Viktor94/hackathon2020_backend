@@ -5,8 +5,8 @@ import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
 import com.app.greenFuxes.service.reserveDate.ReserveDateService;
 import com.app.greenFuxes.service.user.UserService;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,14 +31,23 @@ public class ReserveDateController {
 
   @PostMapping("/reserve")
   public ResponseEntity<?> reserveDate(@RequestBody DateDTO date) throws UserNotFoundException {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    User user = userService.findByUsername(authentication.getName());
-    reserveDateService.addUserToReserveDate(date.getDate(), user);
+    reserveDateService.addUserToReserveDate(date.getDate(), extractUser());
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/unreserve")
+  public ResponseEntity<?> unReserveDate(@RequestBody DateDTO date) throws UserNotFoundException {
+    reserveDateService.removeUserFromReserveDate(date.getDate(), extractUser());
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @GetMapping("/users")
   public ResponseEntity<?> getUsersInOfficeOnSelectedDate(@RequestBody DateDTO dateDTO) {
     return ResponseEntity.ok(reserveDateService.findByDate(dateDTO.getDate()));
+  }
+
+  private User extractUser() throws UserNotFoundException {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return userService.findByUsername(authentication.getName());
   }
 }
