@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -28,25 +30,25 @@ public class CanteenController {
     }
 
     @PostMapping("/apply")
-    ResponseEntity<?> bookCanteenPlace(@RequestBody Principal userPrincipal) throws UserNotFoundException {
-        return response(HttpStatus.OK, canteenService.lunchUser(findUserByPrincipal(userPrincipal)));
+    ResponseEntity<?> bookCanteenPlace() throws UserNotFoundException {
+        return response(HttpStatus.OK, canteenService.lunchUser(extractUser()));
     }
 
     @PostMapping("/finish")
-    ResponseEntity<?> finishLunch(@RequestBody Principal userPrincipal) throws UserNotFoundException {
-        canteenService.finishLunch(findUserByPrincipal(userPrincipal));
+    ResponseEntity<?> finishLunch() throws UserNotFoundException {
+        canteenService.finishLunch(extractUser());
         return response(HttpStatus.OK, "Finishing lunch was successful!");
     }
 
     @GetMapping("/status")
-    ResponseEntity<?> getCanteenStatus(@RequestBody Principal userPrincipal) throws UserNotFoundException {
-        return new ResponseEntity<>(canteenService.canteenStatus(findUserByPrincipal(userPrincipal)), HttpStatus.OK);
+    ResponseEntity<?> getCanteenStatus() throws UserNotFoundException {
+        return new ResponseEntity<>(canteenService.canteenStatus(extractUser()), HttpStatus.OK);
     }
 
     @PutMapping("/configure")
     @PreAuthorize("hasAnyAuthority('admin')")
-    ResponseEntity<?> configureCanteen(@RequestBody CanteenSettingDTO canteenSettingDTO, Principal userPrincipal) throws UserNotFoundException {
-        canteenService.configureCanteen(findUserByPrincipal(userPrincipal), canteenSettingDTO);
+    ResponseEntity<?> configureCanteen(@RequestBody CanteenSettingDTO canteenSettingDTO) throws UserNotFoundException {
+        canteenService.configureCanteen(extractUser(), canteenSettingDTO);
         return response(HttpStatus.OK, "Configuration was successful!");
     }
 
@@ -54,7 +56,10 @@ public class CanteenController {
         return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(), msg.toUpperCase()), httpStatus);
     }
 
-    private User findUserByPrincipal(Principal userPrincipal) throws UserNotFoundException {
-        return userService.findByUsername(userPrincipal.getName());
+
+
+    private User extractUser() throws UserNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userService.findByUsername(authentication.getName());
     }
 }

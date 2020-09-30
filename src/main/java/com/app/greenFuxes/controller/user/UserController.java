@@ -25,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
@@ -33,6 +35,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -121,8 +124,16 @@ public class UserController {
 
   @GetMapping(path = "/{id}/profile/image")
   public ResponseEntity<?> getTempProfileImg(@PathVariable Long id) throws UserNotFoundException {
-
     return new ResponseEntity<>(new PictureDTO(userService.getUserImageUrl(id)), HttpStatus.OK);
+  }
+  @GetMapping(path = "/profile")
+  public ResponseEntity<?> getProfile() throws UserNotFoundException {
+    return new ResponseEntity<>(userService.userProfile(extractUser().getUserName()), HttpStatus.OK);
+  }
+
+  private User extractUser() throws UserNotFoundException {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return userService.findByUsername(authentication.getName());
   }
 
   private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String msg) {
