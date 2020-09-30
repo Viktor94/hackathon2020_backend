@@ -46,6 +46,11 @@ public class ReserveDateController {
     return ResponseEntity.ok(reserveDateService.findByDate(dateDTO.getDate()));
   }
 
+  @GetMapping("/bookings")
+  public ResponseEntity<?> myBookings() throws UserNotFoundException {
+    return new ResponseEntity<>(reserveDateService.getMyBookings(extractUser()), HttpStatus.OK);
+  }
+
   private User extractUser() throws UserNotFoundException {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     return userService.findByUsername(authentication.getName());
