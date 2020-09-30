@@ -1,5 +1,3 @@
-// small instance with linux20.04lts = ami-078db6d55a16afc82
-
 pipeline {
   agent any
   environment {
@@ -13,9 +11,30 @@ pipeline {
     //     sh './gradlew build --rerun-tasks'
     //   }
     // }
+    stage('Test - develop to master') {
+      when {
+        branch 'develop'
+      }
+      steps {
+        sh './gradlew build --rerun-tasks'
+      }
+    }
+    stage('Test - features to develop') {
+      when {
+        not {
+          anyOf {
+            branch 'develop';
+            branch 'master'
+          }
+        }
+      }
+      steps {
+        sh './gradlew build --rerun-tasks'
+      }
+    }
     stage('Deploy docker image') {
-      when{
-          branch 'develop'
+      when {
+          branch 'master'
       }
       steps {
         script {
@@ -29,8 +48,8 @@ pipeline {
       }
     }
     stage('Deploy to AWS') {
-      when{
-          branch 'develop'
+      when {
+          branch 'master'
       }
       steps {
         withAWS(credentials:'benebp-aws', region: 'eu-west-3') {

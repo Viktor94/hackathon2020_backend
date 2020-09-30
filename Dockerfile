@@ -13,9 +13,9 @@ ENV EMAIL_PASSWORD=Asd12345
 ENV JWT_SECRET=secret
 ENV KAFKA_SERVICE_URI="127.0.0.1:9092"
 
+COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
+
 EXPOSE 8080
 EXPOSE 3306
-
-COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
