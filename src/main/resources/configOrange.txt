@@ -1,0 +1,25 @@
+{
+    "controller": {
+        "controllerType": "Timer",
+        "controllerDescriptor": {
+            "initialActions": [
+                {
+                     "actionType": "CreateSegment",
+                     "actionDescriptor": {
+                          "headPosition": 120,
+                          "length": 120,
+                          "headColor": {
+                              "r": 255,
+                              "g": 165,
+                              "b": 0
+                          },
+                          "headIntensity": 1.0,
+                          "priority": 0,
+                          "transforms": []
+                     }
+                }
+            ],
+            "timerActions":[]
+        }
+    }
+}
