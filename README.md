@@ -38,4 +38,4 @@
 
 [![codecov](https://codecov.io/gh/Viktor94/hackathon2020_backend/branch/develop/graph/badge.svg?token=81INYO1QQW)](undefined)
 
-[![GitHub contributors](https://img.shields.io/github/contributors/cdnjs/cdnjs.svg?style=flat)]()
+[![GitHub contributors](https://img.shields.io/github/contributors/Viktor94/hackathon2020_backend.svg?style=flat)]()
