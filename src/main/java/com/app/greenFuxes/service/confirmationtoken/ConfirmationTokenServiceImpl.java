@@ -1,6 +1,7 @@
 package com.app.greenFuxes.service.confirmationtoken;
 
 import com.app.greenFuxes.entity.user.ConfirmationToken;
+import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.confirmationtoken.InvalidConfirmationTokenException;
 import com.app.greenFuxes.repository.ConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
             throw new InvalidConfirmationTokenException("The provided token is expired!");
         }
         return confToken;
+    }
+
+    @Override
+    public ConfirmationToken findByUser(User user) {
+        return confirmationTokenRepository.findByUser(user);
     }
 }

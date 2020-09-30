@@ -172,6 +172,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
   }
 
+  @Override
+  public void saveUser(User user) {
+    userRepository.save(user);
+  }
+
   private String encodePassword(String password) {
     return passwordEncoder.encode(password);
   }
