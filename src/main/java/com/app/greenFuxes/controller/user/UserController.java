@@ -91,6 +91,7 @@ public class UserController {
   }
 
   @PostMapping("/add")
+  @PreAuthorize("hasAnyAuthority('admin')")
   public ResponseEntity<User> addNewUser(@RequestBody NewUserDTO newUserDTO)
       throws IOException, UserManipulationException {
     User newUser = userService.addUser(newUserDTO);
@@ -98,19 +99,21 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
+  @PreAuthorize("hasAnyAuthority('admin')")
   public ResponseEntity<User> findUserById(@PathVariable Long id) throws UserNotFoundException {
     User user = userService.findById(id);
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @GetMapping("")
+  @PreAuthorize("hasAnyAuthority('admin')")
   public ResponseEntity<List<User>> findAllUser() {
     List<User> users = userService.getUsers();
     return new ResponseEntity<>(users, HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAnyAuthority('user:delete')")
+  @PreAuthorize("hasAnyAuthority('admin')")
   public ResponseEntity<?> deleteUser(@PathVariable Long id) throws UserNotFoundException {
     userService.deleteUser(id);
     return ResponseEntity.noContent().build();
