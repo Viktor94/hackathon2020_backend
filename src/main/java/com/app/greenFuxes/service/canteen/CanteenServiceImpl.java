@@ -48,7 +48,7 @@ public class CanteenServiceImpl implements CanteenService {
     User nextUser = canteen.finishLunch(user);
     kafkaMessageService.notify3rdUserAboutUpcomingVacancyInCanteen(canteen.get3rdUserInUserQueue());
     if (nextUser != null) {
-      emailSenderService.sendQueueNotificationEmail(nextUser);
+      emailSenderService.sendQueueNotificationEmail(nextUser, canteen.getLunchtimeInMinute());
     }
   }
 
@@ -62,7 +62,7 @@ public class CanteenServiceImpl implements CanteenService {
     for (Canteen canteen:CanteenManager.getInstance().getCanteenList()) {
       for (User nextUser:canteen.kickGreedy()) {
         if (nextUser!=null){
-          emailSenderService.sendQueueNotificationEmail(nextUser);
+          emailSenderService.sendQueueNotificationEmail(nextUser, canteen.getLunchtimeInMinute());
         }
       }
     }

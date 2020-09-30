@@ -79,7 +79,7 @@ public class UserControllerIntegrationTests {
   @Test
   public void register_successful_assertEquals() throws Exception {
     try {
-      Mockito.doNothing().when(emailSenderService).sendQueueNotificationEmail(any());
+      Mockito.doNothing().when(emailSenderService).sendQueueNotificationEmail(any(), any());
       mockMvc
           .perform(
               post("/users/register")
