@@ -57,10 +57,15 @@ public class CanteenServiceImpl implements CanteenService {
   }
 
   @Override
-  @Scheduled(fixedRate = 60000)
+  @Scheduled(fixedRate = 300000)
   public void kickGreedy() {
-    System.out.println("Egyél kutyyaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    CanteenManager.getInstance().getCanteenList().forEach(Canteen::kickGreedy);
+    for (Canteen canteen:CanteenManager.getInstance().getCanteenList()) {
+      for (User nextUser:canteen.kickGreedy()) {
+        if (nextUser!=null){
+          emailSenderService.sendQueueNotificationEmail(nextUser);
+        }
+      }
+    }
   }
 
   @Override
