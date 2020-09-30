@@ -35,10 +35,10 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
-    public void sendQueueNotificationEmail(User user) {
+    public void sendQueueNotificationEmail(User user, Integer lunchtimeInMinute) {
         String to = user.getEmail();
         String subject = "Time to lunch!";
-        sendHTMLEmail(generateHTMLMessage(to, subject, EmailTemplateService.QUEUE_NOTIFICATION_EMAIL(user)));
+        sendHTMLEmail(generateHTMLMessage(to, subject, EmailTemplateService.QUEUE_NOTIFICATION_EMAIL(user, lunchtimeInMinute)));
     }
 
     private Message generateHTMLMessage(String to, String subject, String template) {

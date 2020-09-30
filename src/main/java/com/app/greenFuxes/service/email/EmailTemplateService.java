@@ -18,9 +18,9 @@ public class EmailTemplateService {
         return htmlReplacedData;
     }
 
-    public static String QUEUE_NOTIFICATION_EMAIL(User user) {
+    public static String QUEUE_NOTIFICATION_EMAIL(User user, Integer lunchtimeInMinute) {
         String htmlString = readHtml("queueNotificationTemplate.html");
-        String htmlReplacedData = htmlString.replace("[USERNAME]", user.getUserName());
+        String htmlReplacedData = htmlString.replace("[USERNAME]", user.getUserName()).replace("[LUNCH_TIME]", String.valueOf(lunchtimeInMinute));
         return htmlReplacedData;
     }
 

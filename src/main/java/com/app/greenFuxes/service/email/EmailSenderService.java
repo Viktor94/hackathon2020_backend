@@ -7,5 +7,5 @@ public interface EmailSenderService {
 
     void sendVerificationEmailHTML(User user, ConfirmationToken confirmationToken);
 
-    void sendQueueNotificationEmail(User user);
+    void sendQueueNotificationEmail(User user, Integer lunchtimeInMinute);
 }
