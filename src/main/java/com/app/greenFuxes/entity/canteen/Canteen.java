@@ -63,14 +63,14 @@ public class Canteen {
     this.lunchStarted = new HashMap<>();
   }
 
-  public User get3rdUserInUserQueue() {
-    if (userQueue.size() == 0) {
-      return null;
-    }
-    if (userQueue.size() <= 3) {
-      ArrayList<User> listOfUsersInQueue = new ArrayList<>(userQueue);
-      return listOfUsersInQueue.get(2);
-    }
-    return null;
+    public User get3rdUserInUserQueue() {
+        if (userQueue.size() == 0) {
+            return null;
+        }
+        if (userQueue.size() <= 3) {
+            ArrayList<User> listOfUsersInQueue = new ArrayList<>(userQueue);
+            return listOfUsersInQueue.get(2);
+        }
+        return null;
   }
 }
