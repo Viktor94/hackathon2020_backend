@@ -21,29 +21,42 @@ public class LEDServiceImpl implements LEDService {
           .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
           .build();
   private final String key = System.getenv("LED_API_KEY");
+  private int count = 244;
 
   @Override
-  public void send(DurationDTO durationDTO, LEDEnum ledEnum) throws Exception {
-    try {
-      String data = new String(Files.readAllBytes(Paths.get("src/main/resources/" + ledEnum.getValue())));
+  public void lock(DurationDTO durationDTO) {
+    int response =
+        client
+            .post()
+            .uri("/lock/" + key)
+            .body(Mono.just(durationDTO), DurationDTO.class)
+            .exchange()
+            .block()
+            .rawStatusCode();
+    System.out.println("/lock status code: " + response);
+  }
 
-      int tempLock = lock(durationDTO);
+  @Override
+  public void send(LEDEnum ledEnum) throws Exception {
+    try {
+      String data =
+          new String(Files.readAllBytes(Paths.get("src/main/resources/" + ledEnum.getValue())));
+      data = data.replace("\"priority\": 0", "\"priority\": " + count);
+
       ConfigDTO configDTO = new ConfigDTO(data);
 
-      if (tempLock == 200) {
-        int tempSend =
-            client
-                .post()
-                .uri("/send/" + key)
-                .body(Mono.just(configDTO), ConfigDTO.class)
-                .exchange()
-                .block()
-                .rawStatusCode();
+      int tempSend =
+          client
+              .post()
+              .uri("/send/" + key)
+              .body(Mono.just(configDTO), ConfigDTO.class)
+              .exchange()
+              .block()
+              .rawStatusCode();
 
-        System.out.println("/send status code: " + tempSend);
-      } else {
-        System.out.println("/lock status code: " + tempLock);
-      }
+      count--;
+
+      System.out.println("/send status code: " + tempSend);
     } catch (IOException e) {
       System.out.println("File read failed");
     }
@@ -53,18 +66,6 @@ public class LEDServiceImpl implements LEDService {
   public void stop() {
     stopSending();
     unLock();
-  }
-
-  private int lock(DurationDTO durationDTO) throws Exception {
-    ClientResponse response =
-        client
-            .post()
-            .uri("/lock/" + key)
-            .body(Mono.just(durationDTO), DurationDTO.class)
-            .exchange()
-            .block();
-
-    return response.rawStatusCode();
   }
 
   private void unLock() {
