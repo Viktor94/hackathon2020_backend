@@ -34,8 +34,14 @@ public class OfficeStatusController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  @PostMapping("/led-lock/test")
+  public ResponseEntity<?> lockLED(@RequestBody DurationDTO durationDTO) {
+    ledService.lock(durationDTO);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
   @PostMapping("/led-send/test/{color}")
-  public ResponseEntity<?> testLED(@RequestBody DurationDTO durationDTO, @PathVariable String color)
+  public ResponseEntity<?> testLED(@PathVariable String color)
       throws Exception {
     LEDEnum ledEnum;
     switch (color.toUpperCase()) {
@@ -51,7 +57,7 @@ public class OfficeStatusController {
       default:
         throw new IllegalStateException("Unexpected value: " + color);
     }
-    ledService.send(durationDTO, ledEnum);
+    ledService.send(ledEnum);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
