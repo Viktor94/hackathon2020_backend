@@ -170,22 +170,4 @@ public class UserControllerIntegrationTests {
         objectMapper.readValue(result.getResponse().getContentAsString(), User.class);
     Assert.assertEquals(responseUser.getProfileImageUrl(), user.getProfileImageUrl());
   }
-  /*
-  @Test
-  public void activate_successful_assertEquals() throws Exception {
-    register_successful_assertEquals();
-    User user = userService.findByUsername(asdRegistrationDTO.getUserName());
-    ConfirmationToken confToken = confirmationTokenService.findByUser(user);
-
-    MvcResult result =
-            mockMvc
-                    .perform(post("/users/confirm?token=" + confToken.getConfirmationToken()))
-                    .andExpect(status().isOk())
-                    .andDo(print())
-                    .andReturn();
-
-    HttpResponse httpResponse =
-            objectMapper.readValue(result.getResponse().getContentAsString(), HttpResponse.class);
-    Assert.assertEquals("ACTIVATION WAS SUCCESSFUL!", httpResponse.getMessage());
-  }*/
 }

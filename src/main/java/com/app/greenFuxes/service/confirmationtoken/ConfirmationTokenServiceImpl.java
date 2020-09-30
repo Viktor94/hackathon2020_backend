@@ -45,5 +45,4 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     public ConfirmationToken findByUser(User user) {
         return confirmationTokenRepository.findByUser(user);
     }
-
 }
