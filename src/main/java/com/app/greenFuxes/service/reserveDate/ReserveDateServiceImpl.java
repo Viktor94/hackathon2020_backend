@@ -3,9 +3,12 @@ package com.app.greenFuxes.service.reserveDate;
 import com.app.greenFuxes.entity.office.Office;
 import com.app.greenFuxes.entity.reservedDate.ReservedDate;
 import com.app.greenFuxes.entity.user.User;
+import com.app.greenFuxes.exception.user.UserNotFoundException;
 import com.app.greenFuxes.repository.ReserveDateRepository;
 import com.app.greenFuxes.repository.officeRepository.OfficeRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,6 +49,20 @@ public class ReserveDateServiceImpl implements ReserveDateService {
     } else if (reserveDateAlreadyExist.getUsersInOffice().size() < office.getCapacity()) {
       reserveDateAlreadyExist.addUserToList(user);
       save(reserveDateAlreadyExist);
+    }
+  }
+
+  @Override
+  public void removeUserFromReserveDate(String date, User user) throws UserNotFoundException {
+    ReservedDate reservedDate = findByDate(date);
+
+    if (reservedDate != null && reservedDate.getUsersInOffice().contains(user)) {
+      List<User> userList = reservedDate.getUsersInOffice();
+      userList.remove(user);
+      reservedDate.setUsersInOffice(userList);
+      save(reservedDate);
+    } else {
+      throw new UserNotFoundException("ReserveDate not contains user");
     }
   }
 }

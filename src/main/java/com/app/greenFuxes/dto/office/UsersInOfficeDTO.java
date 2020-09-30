@@ -15,5 +15,6 @@ public class UsersInOfficeDTO {
 
   private List<User> usersInOffice;
   private Integer numberOfFreeSpots;
+  private Integer officeCapacity;
 
 }

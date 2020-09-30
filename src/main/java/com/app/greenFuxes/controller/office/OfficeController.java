@@ -2,6 +2,7 @@ package com.app.greenFuxes.controller.office;
 
 import com.app.greenFuxes.dto.DateDTO;
 import com.app.greenFuxes.dto.office.UsersInOfficeDTO;
+import com.app.greenFuxes.entity.office.Office;
 import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.service.canteen.CanteenService;
 import com.app.greenFuxes.service.office.OfficeService;
@@ -42,8 +43,9 @@ public class OfficeController {
   @PostMapping("/check-date")
   public ResponseEntity<?> checkDate(@RequestBody DateDTO dateDTO) {
     List<User> list = reserveDateService.findByDate(dateDTO.getDate()).getUsersInOffice();
+    Office office = officeService.findById(1L);
     UsersInOfficeDTO usersInOfficeDTO =
-        new UsersInOfficeDTO(list, officeService.findById(1L).getCapacity() - list.size());
+        new UsersInOfficeDTO(list, office.getCapacity() - list.size(), office.getCapacity());
     return new ResponseEntity<>(usersInOfficeDTO, HttpStatus.OK);
   }
 }
