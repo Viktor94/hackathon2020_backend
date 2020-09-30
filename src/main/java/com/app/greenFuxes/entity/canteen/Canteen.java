@@ -50,7 +50,7 @@ public class Canteen {
     User nextUser = this.userQueue.poll();
     if (nextUser != null) {
       this.usersInCanteen.add(nextUser);
-      this.lunchStarted.put(user, new Date(System.currentTimeMillis()));
+      this.lunchStarted.put(nextUser, new Date(System.currentTimeMillis()));
       return nextUser;
     } else {
       return null;
@@ -61,18 +61,6 @@ public class Canteen {
     this.usersInCanteen = new LinkedBlockingQueue<>(this.maxCanteenCapacity);
     this.userQueue = new LinkedList<>();
     this.lunchStarted = new HashMap<>();
-  }
-
-  public ArrayList<User> kickGreedy() {
-    ArrayList<User> nextUsers = new ArrayList<>();
-    for (Map.Entry<User, Date> user : this.lunchStarted.entrySet()) {
-      long timeSpent =
-          (new Date(System.currentTimeMillis()).getTime() - user.getValue().getTime()) / 100000;
-      if (timeSpent > this.lunchtimeInMinute) {
-        nextUsers.add(finishLunch(user.getKey()));
-      }
-    }
-    return nextUsers;
   }
 
   public User get3rdUserInUserQueue() {
