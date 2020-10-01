@@ -26,6 +26,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
+
+    response.addHeader("Access-Control-Allow-Origin", "https://hackathon-front-end.herokuapp.com/");
+    response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    response.addHeader("Access-Control-Max-Age", "36000");
+    response.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, "
+            + "Access-Control-Request-Headers, Authorization, Bearer, 0");
+    response.addHeader("Access-Control-Expose-Headers", "*");
+    response.addHeader("Access-Control-Allow-Credentials", "true");
+
     if (request.getMethod().equalsIgnoreCase(SecurityConstant.OPTIONS_HTTP_METHOD)) {
       response.setStatus(HttpStatus.OK.value());
     } else {
