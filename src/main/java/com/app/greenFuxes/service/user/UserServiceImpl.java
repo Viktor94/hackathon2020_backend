@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     user.setNotLocked(true);
     user.setRole(Role.ROLE_USER.name());
     user.setAuthorities(Role.ROLE_USER.getAuthorities());
-    user.setProfileImageUrl("https://robohash.org/" + registrationDTO.getUserName() + ".png");
+    user.setProfileImageUrl(generateUserImgURL(registrationDTO.getUserName()));
     userRepository.save(user);
     LOGGER.info("New user created: " + registrationDTO.getUserName());
     return user;
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     registrationValidation(newUserDTO.getUserName(), newUserDTO.getEmail());
     User user = modelMapper.map(newUserDTO, User.class);
     user.setPassword(encodePassword(newUserDTO.getPassword()));
-    user.setProfileImageUrl("https://robohash.org/" + newUserDTO.getUserName() + ".png");
+    user.setProfileImageUrl(generateUserImgURL(newUserDTO.getUserName()));
     user.setActive(true);
     user.setNotLocked(true);
     userRepository.save(user);
@@ -154,13 +154,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @EventListener(ApplicationReadyEvent.class)
   public void createFirstAdmin() {
-    createUser("user", encodePassword("user"), Role.ROLE_USER);
-    createUser("user2", encodePassword("user2"), Role.ROLE_USER);
-    createUser("admin", encodePassword("admin"), Role.ROLE_SUPER_ADMIN);
+    createUser("user", "user", "asd@fdsgsfdg.dgff", "Kis", "Bélus", Role.ROLE_USER);
+    createUser("user2", "user2","lol@afdfgd.safgdg","Nagy","Viktor", Role.ROLE_USER);
+    createUser("admin", "admin","awfa@afdfggd.agdg", "Kovács", "Valaki", Role.ROLE_SUPER_ADMIN);
   }
 
-  public void createUser(String userName, String password, Role role) {
-    User user = new User(userName, password, role.name(), role.getAuthorities(), true, true);
+  public void createUser(String userName, String password, String email, String firstName, String lastName, Role role) {
+    User user = new User(userName, encodePassword(password), email, firstName, lastName, role.name(), role.getAuthorities(), true, true,generateUserImgURL(userName));
     userRepository.save(user);
   }
 
@@ -213,5 +213,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         throw new EmailExistException(EMAIL_ALREADY_EXISTS);
       }
     }
+  }
+
+  private String generateUserImgURL(String username){
+    return "https://robohash.org/" + username + ".png";
   }
 }
