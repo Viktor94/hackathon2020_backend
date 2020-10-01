@@ -11,6 +11,9 @@ import com.app.greenFuxes.security.Role;
 import com.app.greenFuxes.service.canteen.CanteenManager;
 import com.app.greenFuxes.service.canteen.CanteenServiceImpl;
 import com.app.greenFuxes.service.email.EmailSenderService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +21,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 @RunWith(SpringRunner.class)
 public class CanteenServiceImplTest {
@@ -120,7 +119,9 @@ public class CanteenServiceImplTest {
 
   @Test
   public void assertThatEquals_kickGreedy_withNotGreedyUser() {
-    Mockito.doNothing().when(emailSenderService).sendQueueNotificationEmail(user, testCanteen.getLunchtimeInMinute());
+    Mockito.doNothing()
+        .when(emailSenderService)
+        .sendQueueNotificationEmail(user, testCanteen.getLunchtimeInMinute());
     canteenService.lunchUser(user);
     Assert.assertEquals(1, canteenService.findCanteenByOfficeId(20L).getUsersInCanteen().size());
     canteenService.kickGreedy();
@@ -129,7 +130,9 @@ public class CanteenServiceImplTest {
 
   @Test
   public void assertThatEquals_finishLunch() {
-    Mockito.doNothing().when(emailSenderService).sendQueueNotificationEmail(user, testCanteen.getLunchtimeInMinute());
+    Mockito.doNothing()
+        .when(emailSenderService)
+        .sendQueueNotificationEmail(user, testCanteen.getLunchtimeInMinute());
     canteenService.lunchUser(user);
     Assert.assertEquals(1, canteenService.findCanteenByOfficeId(20L).getUsersInCanteen().size());
     canteenService.finishLunch(user);
@@ -138,7 +141,9 @@ public class CanteenServiceImplTest {
 
   @Test
   public void assertThatEquals_kickGreedy_withGreedyUser() {
-    Mockito.doNothing().when(emailSenderService).sendQueueNotificationEmail(user, testCanteen.getLunchtimeInMinute());
+    Mockito.doNothing()
+        .when(emailSenderService)
+        .sendQueueNotificationEmail(user, testCanteen.getLunchtimeInMinute());
     canteenService.lunchUser(user);
     Assert.assertEquals(1, canteenService.findCanteenByOfficeId(20L).getUsersInCanteen().size());
     Date date = canteenService.findCanteenByOfficeId(20L).getLunchStarted().get(user);

@@ -51,11 +51,7 @@ public class ReserveDateControllerTest {
               .perform(
                   post("/users/login")
                       .contentType(contentType)
-                      .content(
-                          mapper.writeValueAsString(
-                              new LoginDTO(
-                                  "admin",
-                                  "admin"))))
+                      .content(mapper.writeValueAsString(new LoginDTO("admin", "admin"))))
               .andExpect(status().isOk())
               .andDo(print())
               .andReturn();
@@ -94,29 +90,29 @@ public class ReserveDateControllerTest {
   @WithMockUser(username = "user", password = "user")
   public void assertThatStatusIsOK_reservationSuccessful() throws Exception {
     try {
-    DateDTO dateDTO = new DateDTO("30/10/2020");
+      DateDTO dateDTO = new DateDTO("30/10/2020");
 
-    mockMvc
-        .perform(
-            post("/office/reserve")
-                .contentType(contentType)
-                .content(mapper.writeValueAsString(dateDTO)))
-        .andExpect(status().isOk())
-        .andReturn();
+      mockMvc
+          .perform(
+              post("/office/reserve")
+                  .contentType(contentType)
+                  .content(mapper.writeValueAsString(dateDTO)))
+          .andExpect(status().isOk())
+          .andReturn();
 
-    MvcResult apiResult =
-        mockMvc
-            .perform(
-                post("/office/check-date")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(dateDTO)))
-            .andExpect(status().isOk())
-            .andReturn();
+      MvcResult apiResult =
+          mockMvc
+              .perform(
+                  post("/office/check-date")
+                      .contentType(contentType)
+                      .content(mapper.writeValueAsString(dateDTO)))
+              .andExpect(status().isOk())
+              .andReturn();
 
-    UsersInOfficeDTO usersInOfficeDTO =
-        mapper.readValue(apiResult.getResponse().getContentAsString(), UsersInOfficeDTO.class);
+      UsersInOfficeDTO usersInOfficeDTO =
+          mapper.readValue(apiResult.getResponse().getContentAsString(), UsersInOfficeDTO.class);
 
-    assertEquals("user", usersInOfficeDTO.getUsersInOffice().get(0).getUserName());
+      assertEquals("user", usersInOfficeDTO.getUsersInOffice().get(0).getUserName());
     } catch (Exception e) {
 
     }
@@ -127,30 +123,30 @@ public class ReserveDateControllerTest {
   @Transactional
   public void assertThatStatusIsOK_numberOfPeopleInOfficeIsOne() throws Exception {
     try {
-    DateDTO dateDTO = new DateDTO("30/10/2020");
+      DateDTO dateDTO = new DateDTO("30/10/2020");
 
-    mockMvc
-        .perform(
-            post("/office/reserve")
-                .contentType(contentType)
-                .content(mapper.writeValueAsString(dateDTO)))
-        .andExpect(status().isOk())
-        .andReturn();
+      mockMvc
+          .perform(
+              post("/office/reserve")
+                  .contentType(contentType)
+                  .content(mapper.writeValueAsString(dateDTO)))
+          .andExpect(status().isOk())
+          .andReturn();
 
-    MvcResult apiResult =
-        mockMvc
-            .perform(
-                post("/office/check-date")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(dateDTO)))
-            .andExpect(status().isOk())
-            .andDo(print())
-            .andReturn();
+      MvcResult apiResult =
+          mockMvc
+              .perform(
+                  post("/office/check-date")
+                      .contentType(contentType)
+                      .content(mapper.writeValueAsString(dateDTO)))
+              .andExpect(status().isOk())
+              .andDo(print())
+              .andReturn();
 
-    UsersInOfficeDTO usersInOfficeDTO =
-        mapper.readValue(apiResult.getResponse().getContentAsString(), UsersInOfficeDTO.class);
+      UsersInOfficeDTO usersInOfficeDTO =
+          mapper.readValue(apiResult.getResponse().getContentAsString(), UsersInOfficeDTO.class);
 
-    assertEquals(1, usersInOfficeDTO.getUsersInOffice().size());
+      assertEquals(1, usersInOfficeDTO.getUsersInOffice().size());
     } catch (Exception e) {
 
     }

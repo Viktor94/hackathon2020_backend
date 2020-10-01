@@ -11,14 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewUserDTO {
-    private String firstName;
-    private String lastName;
-    private String userName;
-    private String password;
-    private String email;
-    private MultipartFile profileImageUrl;
-    private String role;
-    private String[] authorities;
-    private Boolean active;
-    private Boolean notLocked;
+  private String firstName;
+  private String lastName;
+  private String userName;
+  private String password;
+  private String email;
+  private MultipartFile profileImageUrl;
+  private String role;
+  private String[] authorities;
+  private Boolean active;
+  private Boolean notLocked;
 }

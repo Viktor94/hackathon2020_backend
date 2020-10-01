@@ -1,13 +1,17 @@
 package com.app.greenFuxes.entity.canteen;
 
 import com.app.greenFuxes.entity.user.User;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 @Getter
 @Setter

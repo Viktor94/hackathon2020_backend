@@ -35,6 +35,14 @@ public class ReservedDate {
 
   @ManyToOne @JsonBackReference private Office office;
 
+  public ReservedDate() {
+    this.date = convertDateToSimpleDate();
+  }
+
+  public ReservedDate(String date) {
+    this.date = date;
+  }
+
   public void addUserToList(User user) {
     this.usersInOffice.add(user);
   }
@@ -49,13 +57,4 @@ public class ReservedDate {
 
     return dateFormat.format(date1);
   }
-
-  public ReservedDate() {
-    this.date = convertDateToSimpleDate();
-  }
-
-  public ReservedDate(String date) {
-    this.date = date;
-  }
-
 }

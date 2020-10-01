@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ConfirmationTokenRepository extends CrudRepository<ConfirmationToken, Long> {
 
-    ConfirmationToken findByConfirmationToken(String confirmationToken);
+  ConfirmationToken findByConfirmationToken(String confirmationToken);
 
-    ConfirmationToken findByUser(User user);
+  ConfirmationToken findByUser(User user);
 }

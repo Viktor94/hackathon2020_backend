@@ -4,5 +4,5 @@ import com.app.greenFuxes.entity.user.User;
 
 public interface KafkaMessageService {
 
-    void notify3rdUserAboutUpcomingVacancyInCanteen(User user);
+  void notify3rdUserAboutUpcomingVacancyInCanteen(User user);
 }

@@ -1,5 +1,12 @@
 package com.app.greenFuxes.integration.controllers;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.app.greenFuxes.dto.http.HttpResponse;
 import com.app.greenFuxes.dto.picture.PictureDTO;
 import com.app.greenFuxes.dto.user.UserProfileDTO;
@@ -12,6 +19,7 @@ import com.app.greenFuxes.service.confirmationtoken.ConfirmationTokenService;
 import com.app.greenFuxes.service.email.EmailSenderService;
 import com.app.greenFuxes.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,15 +37,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.nio.charset.StandardCharsets;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -175,20 +174,19 @@ public class UserControllerIntegrationTests {
   @Test
   public void getUserProfile_successful_assertEquals() throws Exception {
     login_successful_assertEquals();
-    try{
+    try {
       User user = userService.findByUsername(asdRegistrationDTO.getUserName());
       MvcResult result =
-              mockMvc
-                      .perform(get("/users/profile")
-                              .header("Authorization", "Bearer " + token))
-                      .andExpect(status().isOk())
-                      .andDo(print())
-                      .andReturn();
+          mockMvc
+              .perform(get("/users/profile").header("Authorization", "Bearer " + token))
+              .andExpect(status().isOk())
+              .andDo(print())
+              .andReturn();
 
       UserProfileDTO responseUser =
-              objectMapper.readValue(result.getResponse().getContentAsString(), UserProfileDTO.class);
+          objectMapper.readValue(result.getResponse().getContentAsString(), UserProfileDTO.class);
       Assert.assertEquals(responseUser.getProfileImageUrl(), user.getProfileImageUrl());
-    } catch (Exception e){}
+    } catch (Exception e) {
+    }
   }
-
 }

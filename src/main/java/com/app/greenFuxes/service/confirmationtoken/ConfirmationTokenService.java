@@ -6,11 +6,11 @@ import com.app.greenFuxes.exception.confirmationtoken.InvalidConfirmationTokenEx
 
 public interface ConfirmationTokenService {
 
-    ConfirmationToken saveConfirmationToken(ConfirmationToken token);
+  ConfirmationToken saveConfirmationToken(ConfirmationToken token);
 
-    void deleteConfirmationToken(Long id);
+  void deleteConfirmationToken(Long id);
 
-    ConfirmationToken findByToken(String confirmToken) throws InvalidConfirmationTokenException;
+  ConfirmationToken findByToken(String confirmToken) throws InvalidConfirmationTokenException;
 
-    ConfirmationToken findByUser(User user);
+  ConfirmationToken findByUser(User user);
 }

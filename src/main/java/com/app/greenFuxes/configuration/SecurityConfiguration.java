@@ -1,8 +1,8 @@
 package com.app.greenFuxes.configuration;
 
-import com.app.greenFuxes.filter.JwtRequestFilter;
 import com.app.greenFuxes.filter.JwtAccessDeniedHandler;
 import com.app.greenFuxes.filter.JwtAuthenticationEntryPoint;
+import com.app.greenFuxes.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -22,46 +22,60 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private JwtRequestFilter jwtRequestFilter;
-    private JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private UserDetailsService userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+  private JwtRequestFilter jwtRequestFilter;
+  private JwtAccessDeniedHandler jwtAccessDeniedHandler;
+  private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private UserDetailsService userDetailsService;
+  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public SecurityConfiguration(JwtRequestFilter jwtRequestFilter, JwtAccessDeniedHandler jwtAccessDeniedHandler,
-                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                 @Qualifier("UserDetailsService") UserDetailsService userDetailsService,
-                                 BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.userDetailsService = userDetailsService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+  @Autowired
+  public SecurityConfiguration(
+      JwtRequestFilter jwtRequestFilter,
+      JwtAccessDeniedHandler jwtAccessDeniedHandler,
+      JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+      @Qualifier("UserDetailsService") UserDetailsService userDetailsService,
+      BCryptPasswordEncoder bCryptPasswordEncoder) {
+    this.jwtRequestFilter = jwtRequestFilter;
+    this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    this.userDetailsService = userDetailsService;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().authorizeRequests().antMatchers("/users/login", "/users/register", "/users/image/**", "/users/confirm").permitAll()
-        .and().authorizeRequests().antMatchers("/swagger-resources/**","/swagger-ui/**", "/v2/api-docs", "/webjars/**").permitAll()
-        .anyRequest().authenticated()
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf()
+        .disable()
+        .cors()
         .and()
-        .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
+        .antMatchers("/users/login", "/users/register", "/users/image/**", "/users/confirm")
+        .permitAll()
+        .and()
+        .authorizeRequests()
+        .antMatchers("/swagger-resources/**", "/swagger-ui/**", "/v2/api-docs", "/webjars/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .exceptionHandling()
+        .accessDeniedHandler(jwtAccessDeniedHandler)
         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
         .and()
         .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-      return super.authenticationManagerBean();
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 }

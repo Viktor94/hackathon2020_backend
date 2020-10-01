@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CanteenSettingDTO {
-    private Integer maxCanteenCapacity;
-    private Integer lunchtimeInMinute;
+  private Integer maxCanteenCapacity;
+  private Integer lunchtimeInMinute;
 }

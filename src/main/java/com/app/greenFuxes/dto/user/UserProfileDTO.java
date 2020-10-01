@@ -10,14 +10,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileDTO {
-    private Long id;
-    private String userName;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String role;
-    private String[] authorities;
-    private Boolean active;
-    private Boolean notLocked;
-    private String profileImageUrl;
+  private Long id;
+  private String userName;
+  private String email;
+  private String firstName;
+  private String lastName;
+  private String role;
+  private String[] authorities;
+  private Boolean active;
+  private Boolean notLocked;
+  private String profileImageUrl;
 }

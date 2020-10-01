@@ -6,12 +6,11 @@ import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.kafka.KafkaMessageService;
 import com.app.greenFuxes.service.email.EmailSenderService;
+import java.util.Date;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.Map;
 
 @Service
 public class CanteenServiceImpl implements CanteenService {
@@ -76,8 +75,9 @@ public class CanteenServiceImpl implements CanteenService {
         if (timeSpent >= (canteen.getLunchtimeInMinute() - 5)
             && timeSpent < canteen.getLunchtimeInMinute()) {
           User alarmUser = user.getKey();
-          Integer timeLef = Math.toIntExact(Integer.valueOf(canteen.getLunchtimeInMinute()) - timeSpent);
-          emailSenderService.sendLessThenFiveMinLeftNotificationEmail(alarmUser,timeLef);
+          Integer timeLef =
+              Math.toIntExact(Integer.valueOf(canteen.getLunchtimeInMinute()) - timeSpent);
+          emailSenderService.sendLessThenFiveMinLeftNotificationEmail(alarmUser, timeLef);
         }
       }
     }

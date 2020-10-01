@@ -7,7 +7,6 @@ import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.EmailNotFoundException;
 import com.app.greenFuxes.exception.user.UserManipulationException;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
-
 import java.io.IOException;
 import java.util.List;
 

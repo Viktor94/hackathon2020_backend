@@ -24,8 +24,7 @@ public class OfficeStatusController {
   private final LEDService ledService;
 
   @Autowired
-  public OfficeStatusController(OfficeService officeService,
-      LEDService ledService) {
+  public OfficeStatusController(OfficeService officeService, LEDService ledService) {
     this.officeService = officeService;
     this.ledService = ledService;
   }
@@ -43,8 +42,7 @@ public class OfficeStatusController {
   }
 
   @PostMapping("/led-send/test/{color}")
-  public ResponseEntity<?> testLED(@PathVariable String color)
-      throws Exception {
+  public ResponseEntity<?> testLED(@PathVariable String color) throws Exception {
     LEDEnum ledEnum;
     switch (color.toUpperCase()) {
       case "RED":
