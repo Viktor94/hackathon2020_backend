@@ -64,4 +64,13 @@ public class User implements Serializable {
     this.active = active;
     this.notLocked = notLocked;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    User user = (User)o;
+    if (user.getId() == this.getId()) {
+      return true;
+    }
+    return false;
+  }
 }
