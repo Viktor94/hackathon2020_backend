@@ -35,5 +35,3 @@
 
 
 [![CircleCI](https://circleci.com/gh/Viktor94/hackathon2020_backend.svg?style=svg&circle-token=7abd2359947f17a4cd4c4d8588380133811ab68a)](https://github.com/Viktor94/hackathon2020_backend/)
-
-[![GitHub contributors](https://img.shields.io/github/contributors/Viktor94/hackathon2020_backend.svg)](https://github.com/Viktor94/hackathon2020_backend/graphs/contributors)
