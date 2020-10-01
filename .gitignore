@@ -2,6 +2,7 @@ HELP.md
 .gradle
 build/
 .idea
+!build/jacoco/test.exec
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
