@@ -8,4 +8,8 @@ public interface EmailSenderService {
     void sendVerificationEmailHTML(User user, ConfirmationToken confirmationToken);
 
     void sendQueueNotificationEmail(User user, Integer lunchtimeInMinute);
+
+    void sendKickFromCanteenNotificationEmail(User user);
+    void sendLessThenFiveMinLeftNotificationEmail(User user, Integer lunchtimeLeftInMinute);
+
 }
