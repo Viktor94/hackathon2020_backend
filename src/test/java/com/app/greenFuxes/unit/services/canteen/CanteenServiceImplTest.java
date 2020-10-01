@@ -161,4 +161,28 @@ public class CanteenServiceImplTest {
     Assert.assertEquals(Integer.valueOf(2), canteenStatusDTO.getFreeSpace());
     Assert.assertEquals(Integer.valueOf(30), canteenStatusDTO.getLunchTimeLengthInMinute());
   }
+
+  @Test
+  public void assertThatEquals_placeUserFromQueue_withMidnightPass() {
+    canteenService.configureCanteen(user, new CanteenSettingDTO(1, 30));
+    canteenService.setConfiguration();
+    CanteenStatusDTO canteenStatusDTO = canteenService.canteenStatus(user);
+    Assert.assertEquals(Integer.valueOf(1), canteenStatusDTO.getFreeSpace());
+    Assert.assertEquals(Integer.valueOf(30), canteenStatusDTO.getLunchTimeLengthInMinute());
+
+    canteenService.lunchUser(user);
+    User otherUser = new User(2L);
+    reservedDate.getUsersInOffice().add(otherUser);
+    CanteenStatusDTO canteenStatusDTOAfter = canteenService.canteenStatus(user);
+    Assert.assertEquals(Integer.valueOf(0), canteenStatusDTOAfter.getFreeSpace());
+
+
+    otherUser.setReservedDate(new ArrayList<>(Collections.singletonList(reservedDate)));
+    canteenService.lunchUser(otherUser);
+    canteenService.finishLunch(user);
+
+    CanteenStatusDTO canteenStatusDTOAfterAfter = canteenService.canteenStatus(user);
+    Assert.assertEquals(Integer.valueOf(0), canteenStatusDTOAfterAfter.getFreeSpace());
+    Assert.assertEquals(0L, canteenStatusDTOAfter.getUserQueue().size());
+  }
 }
