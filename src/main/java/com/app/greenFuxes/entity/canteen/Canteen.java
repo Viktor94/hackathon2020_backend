@@ -32,10 +32,10 @@ public class Canteen {
   }
 
   public boolean lunchUser(User user) {
-    if (usersInCanteen.contains(user)) {
+    if (this.usersInCanteen.contains(user)) {
       return true;
     }
-    if (userQueue.contains(user)) {
+    if (this.userQueue.contains(user)) {
       return false;
     }
 

@@ -49,13 +49,32 @@ public class User implements Serializable {
   @JsonBackReference
   private List<ReservedDate> reservedDate = new ArrayList<>();
 
-  public User(
-      String userName,
-      String password,
-      String role,
-      String[] authorities,
-      Boolean active,
-      Boolean notLocked) {
+  public User(Long id) {
+    this.id = id;
+  }
+
+  public User(String userName,
+              String password,
+              String role,
+              String[] authorities,
+              Boolean active,
+              Boolean notLocked) {
+    this.userName = userName;
+    this.password = password;
+    this.role = role;
+    this.authorities = authorities;
+    this.active = active;
+    this.notLocked = notLocked;
+  }
+
+  public User(Long id,
+              String userName,
+              String password,
+              String role,
+              String[] authorities,
+              Boolean active,
+              Boolean notLocked) {
+    this.id = id;
     this.userName = userName;
     this.password = password;
     this.role = role;
