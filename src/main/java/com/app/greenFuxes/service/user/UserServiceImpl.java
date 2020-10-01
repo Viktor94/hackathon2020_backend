@@ -119,8 +119,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     User user = modelMapper.map(newUserDTO, User.class);
     user.setPassword(encodePassword(newUserDTO.getPassword()));
     user.setProfileImageUrl("https://robohash.org/" + newUserDTO.getUserName() + ".png");
+    user.setActive(true);
+    user.setNotLocked(true);
     userRepository.save(user);
-
     return user;
   }
 

@@ -22,13 +22,12 @@ public class SwaggerConfig {
 
   private ApiInfo apiInfo() {
     return new ApiInfo(
-        "TemplateApp",
-        "Template app for projects",
-        "API, version 1",
+        "Hackathon Backend App",
+        "Office life manager application.",
+        "1.0",
         "Free to use",
-        new Contact("", "", ""),
-        "Free to use",
-        "",
+        new Contact("Green Fuxe$", "https://github.com/Viktor94/hackathon2020_backend", ""),
+        "Free to use", "https://github.com/Viktor94/hackathon2020_backend",
         Collections.emptyList());
   }
 }

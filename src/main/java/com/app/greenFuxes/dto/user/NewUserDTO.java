@@ -16,9 +16,6 @@ public class NewUserDTO {
   private String userName;
   private String password;
   private String email;
-  private MultipartFile profileImageUrl;
   private String role;
   private String[] authorities;
-  private Boolean active;
-  private Boolean notLocked;
 }
