@@ -46,7 +46,7 @@ public class CanteenServiceImplTest {
     testOffice.setId(officeId);
     reservedDate = new ReservedDate();
     user =
-        new User("bob", "bob", Role.ROLE_USER.name(), Role.ROLE_USER.getAuthorities(), true, true);
+        new User(1L,"bob", "bob", Role.ROLE_USER.name(), Role.ROLE_USER.getAuthorities(), true, true);
     reservedDate.setUsersInOffice(new ArrayList<>(Collections.singletonList(user)));
     user.setReservedDate(new ArrayList<>(Collections.singletonList(reservedDate)));
     testOffice.setReservedDates(new ArrayList<>(Collections.singletonList(reservedDate)));
@@ -84,7 +84,7 @@ public class CanteenServiceImplTest {
   public void assertThatEquals_lunchUser_withNoPlaceInCanteen() {
     canteenService.configureCanteen(user, new CanteenSettingDTO(1, 30));
     canteenService.restartDay(user);
-    User otherUser = new User();
+    User otherUser = new User(2L);
     reservedDate.getUsersInOffice().add(otherUser);
     otherUser.setReservedDate(new ArrayList<>(Collections.singletonList(reservedDate)));
     Assert.assertEquals("You can go to the canteen.", canteenService.lunchUser(user));
