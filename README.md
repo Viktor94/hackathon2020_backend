@@ -11,7 +11,7 @@
 - DATASOURCE_PASSWORD                       `Your database password`
 
 ##### For Email sending
-- EMAIL_USERNAME                            `An eamail addres`
+- EMAIL_USERNAME                            `An email addres`
 - EMAIL_PASSWORD                            `Password for the email`
 
 ##### For JWT Token generation
