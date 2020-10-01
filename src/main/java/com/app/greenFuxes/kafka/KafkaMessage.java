@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class KafkaMessage {
 
-    private String type;
-    private String message;
-
+  private String type;
+  private String message;
 }

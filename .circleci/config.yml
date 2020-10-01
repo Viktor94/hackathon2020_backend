@@ -20,8 +20,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-          - v1-gradle-cache-{{ checksum "build.gradle" }}
+            - v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - v1-gradle-cache-{{ checksum "build.gradle" }}
 
       - save_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}

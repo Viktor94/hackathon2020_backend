@@ -3,37 +3,38 @@ package com.app.greenFuxes.controller.user;
 import com.app.greenFuxes.dto.http.HttpResponse;
 import com.app.greenFuxes.dto.picture.PictureDTO;
 import com.app.greenFuxes.dto.user.NewUserDTO;
-import com.app.greenFuxes.dto.user.ProfileImageUpdateDTO;
 import com.app.greenFuxes.dto.user.login.LoginDTO;
 import com.app.greenFuxes.dto.user.login.LoginResponseDTO;
 import com.app.greenFuxes.dto.user.registration.RegistrationDTO;
+import com.app.greenFuxes.entity.user.ConfirmationToken;
 import com.app.greenFuxes.entity.user.User;
+import com.app.greenFuxes.exception.confirmationtoken.InvalidConfirmationTokenException;
 import com.app.greenFuxes.exception.user.UserManipulationException;
 import com.app.greenFuxes.exception.user.UserNotFoundException;
-import com.app.greenFuxes.security.UserPrincipal;
-import com.app.greenFuxes.service.user.UserService;
-import com.app.greenFuxes.entity.user.ConfirmationToken;
-import com.app.greenFuxes.exception.confirmationtoken.InvalidConfirmationTokenException;
 import com.app.greenFuxes.security.JwtUtility;
+import com.app.greenFuxes.security.UserPrincipal;
 import com.app.greenFuxes.service.confirmationtoken.ConfirmationTokenService;
 import com.app.greenFuxes.service.email.EmailSenderServiceImpl;
-import com.app.greenFuxes.util.FileConstant;
+import com.app.greenFuxes.service.user.UserService;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = {"/users"})
@@ -121,8 +122,18 @@ public class UserController {
 
   @GetMapping(path = "/{id}/profile/image")
   public ResponseEntity<?> getTempProfileImg(@PathVariable Long id) throws UserNotFoundException {
-
     return new ResponseEntity<>(new PictureDTO(userService.getUserImageUrl(id)), HttpStatus.OK);
+  }
+
+  @GetMapping(path = "/profile")
+  public ResponseEntity<?> getProfile() throws UserNotFoundException {
+    return new ResponseEntity<>(
+        userService.userProfile(extractUser().getUserName()), HttpStatus.OK);
+  }
+
+  private User extractUser() throws UserNotFoundException {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return userService.findByUsername(authentication.getName());
   }
 
   private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String msg) {

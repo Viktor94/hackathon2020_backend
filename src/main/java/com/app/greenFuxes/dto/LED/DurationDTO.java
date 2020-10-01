@@ -12,5 +12,4 @@ import lombok.Setter;
 public class DurationDTO {
 
   private Integer duration;
-
 }

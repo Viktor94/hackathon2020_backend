@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginResponseDTO {
 
-private String msg;
-private String token;
+  private String msg;
+  private String token;
 }

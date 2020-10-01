@@ -7,20 +7,19 @@ import com.app.greenFuxes.entity.user.User;
 
 public interface CanteenService {
 
-    Canteen addCanteen(Long officeId);
+  Canteen addCanteen(Long officeId);
 
-    Canteen findCanteenByOfficeId(Long officeId);
+  Canteen findCanteenByOfficeId(Long officeId);
 
-    String lunchUser(User user);
+  String lunchUser(User user);
 
-    void finishLunch(User user);
+  void finishLunch(User user);
 
-    void kickGreedy();
+  void kickGreedy();
 
-    void restartDay(User user);
+  void restartDay(User user);
 
-    void configureCanteen(User user, CanteenSettingDTO canteenSettingDTO);
+  void configureCanteen(User user, CanteenSettingDTO canteenSettingDTO);
 
-    CanteenStatusDTO canteenStatus(User user);
-
+  CanteenStatusDTO canteenStatus(User user);
 }
