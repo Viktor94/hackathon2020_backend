@@ -1,6 +1,7 @@
 package com.app.greenFuxes.service.user;
 
 import com.app.greenFuxes.dto.user.NewUserDTO;
+import com.app.greenFuxes.dto.user.UserProfileDTO;
 import com.app.greenFuxes.dto.user.registration.RegistrationDTO;
 import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.EmailNotFoundException;
@@ -31,4 +32,6 @@ public interface UserService {
   String getUserImageUrl(Long id) throws UserNotFoundException;
 
   void saveUser(User user);
+
+  UserProfileDTO userProfile(String username) throws UserNotFoundException;
 }

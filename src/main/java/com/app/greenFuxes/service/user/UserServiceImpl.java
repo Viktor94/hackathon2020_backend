@@ -1,6 +1,7 @@
 package com.app.greenFuxes.service.user;
 
 import com.app.greenFuxes.dto.user.NewUserDTO;
+import com.app.greenFuxes.dto.user.UserProfileDTO;
 import com.app.greenFuxes.dto.user.registration.RegistrationDTO;
 import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.exception.user.EmailExistException;
@@ -175,6 +176,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   @Override
   public void saveUser(User user) {
     userRepository.save(user);
+  }
+
+  @Override
+  public UserProfileDTO userProfile(String username) throws UserNotFoundException {
+    User user = findByUsername(username);
+    return modelMapper.map(user, UserProfileDTO.class);
   }
 
   private String encodePassword(String password) {

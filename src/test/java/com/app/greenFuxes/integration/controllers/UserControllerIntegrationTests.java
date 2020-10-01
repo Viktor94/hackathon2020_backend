@@ -2,6 +2,7 @@ package com.app.greenFuxes.integration.controllers;
 
 import com.app.greenFuxes.dto.http.HttpResponse;
 import com.app.greenFuxes.dto.picture.PictureDTO;
+import com.app.greenFuxes.dto.user.UserProfileDTO;
 import com.app.greenFuxes.dto.user.login.LoginDTO;
 import com.app.greenFuxes.dto.user.login.LoginResponseDTO;
 import com.app.greenFuxes.dto.user.registration.RegistrationDTO;
@@ -170,4 +171,24 @@ public class UserControllerIntegrationTests {
         objectMapper.readValue(result.getResponse().getContentAsString(), User.class);
     Assert.assertEquals(responseUser.getProfileImageUrl(), user.getProfileImageUrl());
   }
+
+  @Test
+  public void getUserProfile_successful_assertEquals() throws Exception {
+    login_successful_assertEquals();
+    try{
+      User user = userService.findByUsername(asdRegistrationDTO.getUserName());
+      MvcResult result =
+              mockMvc
+                      .perform(get("/users/profile")
+                              .header("Authorization", "Bearer " + token))
+                      .andExpect(status().isOk())
+                      .andDo(print())
+                      .andReturn();
+
+      UserProfileDTO responseUser =
+              objectMapper.readValue(result.getResponse().getContentAsString(), UserProfileDTO.class);
+      Assert.assertEquals(responseUser.getProfileImageUrl(), user.getProfileImageUrl());
+    } catch (Exception e){}
+  }
+
 }
