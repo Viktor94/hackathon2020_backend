@@ -33,3 +33,5 @@ jobs:
             - ~/.gradle/caches
 
       - run: gradle test
+      - store_artifacts:
+          path:  target

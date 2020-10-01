@@ -6,17 +6,12 @@ pipeline {
     APP_NAME = 'hackathon2020-09-greenfuxes-backend'
   }
   stages {
-    // stage('Gradle Build') {
-    //   steps {
-    //     sh './gradlew build --rerun-tasks'
-    //   }
-    // }
     stage('Test - develop to master') {
       when {
         branch 'develop'
       }
       steps {
-        sh './gradlew build --rerun-tasks'
+        // sh './gradlew build --rerun-tasks' ---cmd to run tests?
       }
     }
     stage('Test - features to develop') {
@@ -29,7 +24,7 @@ pipeline {
         }
       }
       steps {
-        sh './gradlew build --rerun-tasks'
+        // sh './gradlew build --rerun-tasks' ---cmd to run tests?
       }
     }
     stage('Deploy docker image') {
@@ -68,11 +63,5 @@ pipeline {
       }
     }
   }
-  // post{
-  //   always{
-  //     junit 'build/test-results/**/*.xml'
-  //     step([$class: 'JacocoPublisher', execPattern: 'target/*.exec', classPattern: 'target/classes', sourcePattern: 'src/main/java', exclusionPattern: 'src/test*'])
-  //   }
-  // }
 }
 
