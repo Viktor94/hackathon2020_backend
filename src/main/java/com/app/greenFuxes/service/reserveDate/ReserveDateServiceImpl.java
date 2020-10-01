@@ -46,7 +46,8 @@ public class ReserveDateServiceImpl implements ReserveDateService {
       newReserveDate.setOffice(office);
       newReserveDate.addUserToList(user);
       save(newReserveDate);
-    } else if (reserveDateAlreadyExist.getUsersInOffice().size() < office.getCapacity()) {
+    } else if (reserveDateAlreadyExist.getUsersInOffice().size() < office.getCapacity()
+        && !reserveDateAlreadyExist.getUsersInOffice().contains(user)) {
       reserveDateAlreadyExist.addUserToList(user);
       save(reserveDateAlreadyExist);
     }
