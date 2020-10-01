@@ -1,6 +1,7 @@
 HELP.md
 .gradle
-build/
+build/*
+!build/jacoco/test.exec
 .idea
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
