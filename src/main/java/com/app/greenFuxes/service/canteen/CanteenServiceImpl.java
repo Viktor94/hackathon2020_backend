@@ -5,6 +5,7 @@ import com.app.greenFuxes.dto.canteen.CanteenStatusDTO;
 import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.user.User;
 import com.app.greenFuxes.kafka.KafkaMessageService;
+import com.app.greenFuxes.service.LED.LEDEnum;
 import com.app.greenFuxes.service.email.EmailSenderService;
 import java.util.Date;
 import java.util.Map;
@@ -106,4 +107,31 @@ public class CanteenServiceImpl implements CanteenService {
   public void setConfiguration() {
     CanteenManager.getInstance().getCanteenList().forEach(Canteen::restartDay);
   }
+
+  @Override
+  public int getFreeSpaceInCanteen() {
+    return CanteenManager.getInstance().getCanteenList().stream().findFirst().get().getFreeSpaceInCanteen();
+  }
+
+  @Override
+  public int getCanteenCapacity() {
+    return CanteenManager.getInstance().getCanteenList().stream().findAny().get().getMaxCanteenCapacity();
+  }
+
+  public LEDEnum getCanteenLedStatus(){
+    return CanteenManager.getInstance().getCanteenList().stream().findAny().get().getCanteenLedStatus();
+  }
+
+  public void setCanteenLedStatus(LEDEnum ledStatus){
+    CanteenManager.getInstance().getCanteenList().stream().findAny().get().setCanteenLedStatus(ledStatus);
+  }
+
+  public int getLedPriorityCounter(){
+    return CanteenManager.getInstance().getCanteenList().stream().findAny().get().getLedPriorityCounter();
+  }
+
+  public void setLedPriorityCounter(int counter){
+    CanteenManager.getInstance().getCanteenList().stream().findAny().get().setLedPriorityCounter(counter);
+  }
+
 }

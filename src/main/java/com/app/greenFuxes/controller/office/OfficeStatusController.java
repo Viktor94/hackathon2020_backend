@@ -57,7 +57,7 @@ public class OfficeStatusController {
       default:
         throw new IllegalStateException("Unexpected value: " + color);
     }
-    ledService.send(ledEnum);
+    ledService.testLedDisplay(ledEnum);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 

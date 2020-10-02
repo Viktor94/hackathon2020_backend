@@ -4,6 +4,7 @@ import com.app.greenFuxes.dto.canteen.CanteenSettingDTO;
 import com.app.greenFuxes.dto.canteen.CanteenStatusDTO;
 import com.app.greenFuxes.entity.canteen.Canteen;
 import com.app.greenFuxes.entity.user.User;
+import com.app.greenFuxes.service.LED.LEDEnum;
 
 public interface CanteenService {
 
@@ -22,4 +23,18 @@ public interface CanteenService {
   void configureCanteen(User user, CanteenSettingDTO canteenSettingDTO);
 
   CanteenStatusDTO canteenStatus(User user);
+
+    int getFreeSpaceInCanteen();
+
+    int getCanteenCapacity();
+
+    LEDEnum getCanteenLedStatus();
+
+    void setCanteenLedStatus(LEDEnum ledStatus);
+
+    public int getLedPriorityCounter();
+
+    public void setLedPriorityCounter(int counter);
+
+
 }
