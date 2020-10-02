@@ -9,6 +9,9 @@
 - DATASOURCE_URL                            `jdbc:mysql://localhost/greenfuxes?serverTimezone=UTC`
 - DATASOURCE_USERNAME                       `Your database username`
 - DATASOURCE_PASSWORD                       `Your database password`
+#### For Cors Filter
+-FRONTEND_PATH                              `Your frontend URL`
+
 
 ##### For Email sending
 - EMAIL_USERNAME                            `An email addres`
