@@ -21,7 +21,7 @@ import lombok.Setter;
 public class Canteen {
 
   private Long officeId;
-  private Integer maxCanteenCapacity = 10;
+  private Integer maxCanteenCapacity = 2;
   private Integer lunchtimeInMinute = 30;
   private LinkedBlockingQueue<User> usersInCanteen =
       new LinkedBlockingQueue<>(this.maxCanteenCapacity);

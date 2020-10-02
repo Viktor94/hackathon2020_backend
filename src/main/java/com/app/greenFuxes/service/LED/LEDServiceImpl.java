@@ -107,10 +107,10 @@ public class LEDServiceImpl implements LEDService {
     int freeSpace = canteenService.getFreeSpaceInCanteen();
     int canteenCapacity = canteenService.getCanteenCapacity();
     LEDEnum currentStatus;
-    if ( 0.2f * canteenCapacity < freeSpace) {
+    if ( freeSpace == canteenService.getCanteenCapacity()) {
       currentStatus = LEDEnum.GREEN;
       //System.out.println("Status is GREEN");
-    } else if (0 < freeSpace && freeSpace <= 0.2f * canteenCapacity) {
+    } else if (freeSpace == 1) {
       //System.out.println("Status is ORANGE");
       currentStatus = LEDEnum.ORANGE;
     } else {
