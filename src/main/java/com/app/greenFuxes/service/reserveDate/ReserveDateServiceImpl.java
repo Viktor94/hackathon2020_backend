@@ -31,7 +31,17 @@ public class ReserveDateServiceImpl implements ReserveDateService {
 
   @Override
   public ReservedDate findByDate(String date) {
-    return reserveDateRepository.findByDate(date).orElse(null);
+    ReservedDate reservedDate = reserveDateRepository.findByDate(date).orElse(null);
+    if (reservedDate == null) {
+      Office office = officeRepository.findById(1L).get();
+      ReservedDate newReserveDate = new ReservedDate(date);
+      newReserveDate.setOffice(office);
+      officeRepository.save(office);
+      reserveDateRepository.save(newReserveDate);
+      return newReserveDate;
+    }else {
+      return reservedDate;
+    }
   }
 
   @Override
