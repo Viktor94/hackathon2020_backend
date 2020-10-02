@@ -1,4 +1,5 @@
-# Green Fuxe$ Hackathon Backend
+# Green Fuxe$ Hackathon Backend [![CircleCI](https://circleci.com/gh/Viktor94/hackathon2020_backend.svg?style=svg&circle-token=7abd2359947f17a4cd4c4d8588380133811ab68a)](https://github.com/Viktor94/hackathon2020_backend/) 
+[![GitHub contributors](https://img.shields.io/github/contributors/Viktor94/hackathon2020_backend.svg)](https://github.com/Viktor94/hackathon2020_backend/graphs/contributors)
 
 
 ## For the project to compile and run, use these environmental variables:
@@ -9,6 +10,10 @@
 - DATASOURCE_URL                            `jdbc:mysql://localhost/greenfuxes?serverTimezone=UTC`
 - DATASOURCE_USERNAME                       `Your database username`
 - DATASOURCE_PASSWORD                       `Your database password`
+
+#### For Led API
+- LED_API_KEY                              `ccd32ba1-13bb-4d8a-bd27-78c28ccafc29`
+- LED_URL                                  `http://backend.bassboost.hu/hackathon`
 
 ##### For Email sending
 - EMAIL_USERNAME                            `An email addres`
@@ -32,6 +37,3 @@
 - [mrbelpit](https://github.com/mrbelpit)
 - [Viktor94](https://github.com/Viktor94)
 - [alexfrenkel92](https://github.com/alexfrenkel92)
-
-
-[![CircleCI](https://circleci.com/gh/Viktor94/hackathon2020_backend.svg?style=svg&circle-token=7abd2359947f17a4cd4c4d8588380133811ab68a)](https://github.com/Viktor94/hackathon2020_backend/)
