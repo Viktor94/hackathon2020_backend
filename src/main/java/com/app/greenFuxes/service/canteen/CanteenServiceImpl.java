@@ -60,7 +60,7 @@ public class CanteenServiceImpl implements CanteenService {
   }
 
   @Override
-  @Scheduled(fixedRate = 300000)
+  @Scheduled(fixedRate = 60000)
   public void kickGreedy() {
     for (Canteen canteen : CanteenManager.getInstance().getCanteenList()) {
       for (Map.Entry<User, Date> user : canteen.getLunchStarted().entrySet()) {
@@ -72,7 +72,7 @@ public class CanteenServiceImpl implements CanteenService {
           emailSenderService.sendKickFromCanteenNotificationEmail(kickUser);
           emailSenderService.sendQueueNotificationEmail(nextUser, canteen.getLunchtimeInMinute());
         }
-        if (timeSpent >= (canteen.getLunchtimeInMinute() - 5)
+        if (timeSpent >= (canteen.getLunchtimeInMinute() - 1)
             && timeSpent < canteen.getLunchtimeInMinute()) {
           User alarmUser = user.getKey();
           Integer timeLef =
