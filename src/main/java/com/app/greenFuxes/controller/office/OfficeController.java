@@ -44,8 +44,13 @@ public class OfficeController {
 
   @PostMapping("/check-date")
   public ResponseEntity<?> checkDate(@RequestBody DateDTO dateDTO) {
-    List<User> list = reserveDateService.findByDate(dateDTO.getDate()).getUsersInOffice();
+    ReservedDate reservedDate = reserveDateService.findByDate(dateDTO.getDate());
     Office office = officeService.findById(1L);
+    if (reservedDate == null) {
+      UsersInOfficeDTO defaultDTO = new UsersInOfficeDTO(new ArrayList<>(), office.getCapacity(), office.getCapacity());
+      return new ResponseEntity<>(defaultDTO, HttpStatus.OK);
+    }
+    List<User> list = reserveDateService.findByDate(dateDTO.getDate()).getUsersInOffice();
     UsersInOfficeDTO usersInOfficeDTO =
         new UsersInOfficeDTO(list, office.getCapacity() - list.size(), office.getCapacity());
     return new ResponseEntity<>(usersInOfficeDTO, HttpStatus.OK);
