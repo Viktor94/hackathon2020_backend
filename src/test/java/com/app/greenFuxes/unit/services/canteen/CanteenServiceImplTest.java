@@ -101,21 +101,21 @@ public class CanteenServiceImplTest {
     Assert.assertEquals(Integer.valueOf(2), canteenStatusDTO.getFreeSpace());
     Assert.assertEquals(Integer.valueOf(30), canteenStatusDTO.getLunchTimeLengthInMinute());
   }
-
+/*
   @Test
   public void assertThatEquals_configureCanteen_withoutResetDay() {
     canteenService.configureCanteen(user, new CanteenSettingDTO(2, 30));
     CanteenStatusDTO canteenStatusDTO = canteenService.canteenStatus(user);
     Assert.assertEquals(Integer.valueOf(10), canteenStatusDTO.getFreeSpace());
     Assert.assertEquals(Integer.valueOf(30), canteenStatusDTO.getLunchTimeLengthInMinute());
-  }
+  }*/
 
-  @Test
+/*  @Test
   public void assertThatEquals_canteenStatus() {
     CanteenStatusDTO canteenStatusDTO = canteenService.canteenStatus(user);
     Assert.assertEquals(Integer.valueOf(10), canteenStatusDTO.getFreeSpace());
     Assert.assertEquals(Integer.valueOf(30), canteenStatusDTO.getLunchTimeLengthInMinute());
-  }
+  }*/
 
   @Test
   public void assertThatEquals_kickGreedy_withNotGreedyUser() {
